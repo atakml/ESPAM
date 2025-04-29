@@ -1,0 +1,1810 @@
+
+
+
+
+
+
+        <style>
+            /**
+ * General styling
+ */
+body {
+    font-family: 'DejaVu', sans-serif;
+}
+h1,h2,h3,h4 {
+    margin: 0 0 10px 0;
+}
+h1 {
+    font-size: 26px;
+}
+h2 {
+    font-size: 20px;
+    font-weight: 400;
+}
+h3 {
+	font-size: 16px;
+}
+p {
+    margin: 0 0 10px 0;
+}
+
+
+/* Remove body margin inside iframe */
+body.m2g-inside-iframe {
+    margin: 0;
+}
+
+/* In-cell text */
+#mols2grid .data:not(.data-img) {
+    height: 16px;
+    line-height: 16px;
+}
+/* Text truncation */
+#mols2grid .data {
+    /* Break text into multiple lines (default for static)... */
+    word-wrap: normal;
+
+    /* ...or truncate it (default for interactive). */
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+
+/**
+ * Popover
+ * - - -
+ * Note: this is a bootstrap variable which is not namespaced.
+ * To avoid any contamination, we only style it when the
+ * x-placement parameter is set.
+ */
+.popover[x-placement] {
+    font-family: 'DejaVu', sans-serif;
+    background: white;
+    border: solid 1px rgba(0,0,0,.2);
+    font-size: 12px;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 20px rgba(0,0,0,.15);
+    user-select: none;
+}
+.popover[x-placement] h3 {
+    margin: 0;
+}
+.popover[x-placement] .arrow {
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    border: solid 1px rgba(0,0,0,.2);
+    box-sizing: border-box;
+    position: absolute;
+    transform-origin: 5px 5px;
+    clip-path: polygon(0 0, 100% 0, 100% 100%);
+}
+.popover[x-placement='left'] .arrow {
+    transform: rotate(45deg);
+    top: 50%;
+    right: -5px;
+}
+.popover[x-placement='right'] .arrow {
+    transform: rotate(-135deg);
+    top: 50%;
+    left: -5px;
+}
+.popover[x-placement='top'] .arrow {
+    transform: rotate(135deg);
+    left: 50%;
+    bottom: -5px;
+}
+.popover[x-placement='bottom'] .arrow {
+    transform: rotate(-45deg);
+    left: 50%;
+    top: -5px;
+}
+            body {
+    /* Colors */
+    --m2g-black: rgba(0,0,0,.75);
+    --m2g-black-soft: rgba(0,0,0,.35);
+    --m2g-black-10: rgba(0,0,0,.1);
+    --m2g-bg: #f6f6f6;
+    --m2g-border: solid 1px rgba(0,0,0,0.2);
+    --m2g-hl: #555; /* Highlight color */
+    --m2g-hl-shadow: inset 0 0 0 1px var(--m2g-hl); /* Inset 1px shadow to make border thicker */
+    --m2g-blue: #0f62fe;
+    --m2g-blue-soft: rgba(15,98,254,.2);
+
+    /* Icons */
+    --m2g-icn-triangle: url('data:image/svg+xml;utf8,<svg width="20" fill="rgba(0,0,0,.75)" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M9.5713 13.285L6.2543 7.757C6.0543 7.424 6.2953 7 6.6823 7L13.3173 7C13.7053 7 13.9463 7.424 13.7453 7.757L10.4283 13.285C10.2343 13.609 9.7653 13.609 9.5713 13.285Z"/></svg>');
+    --m2g-icn-triangle-white: url('data:image/svg+xml;utf8,<svg width="20" fill="white" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M9.5713 13.285L6.2543 7.757C6.0543 7.424 6.2953 7 6.6823 7L13.3173 7C13.7053 7 13.9463 7.424 13.7453 7.757L10.4283 13.285C10.2343 13.609 9.7653 13.609 9.5713 13.285Z"/></svg>');
+    --m2g-icn-cb-white: url('data:image/svg+xml;utf8,<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" xmlns="http://www.w3.org/2000/svg"><path d="M4 7.65686L7 10.6569L12.6569 5.00001"/></svg>');
+    
+    /* Border radius */
+    --m2g-br: 3px;
+    --m2g-br-l: var(--m2g-br) 0 0 var(--m2g-br); /* Left-only */
+    --m2g-br-r: 0 var(--m2g-br) var(--m2g-br) 0; /* Right-only */
+
+    /* Text */
+    --m2g-fs: 14px; /* UI font-size */
+    --m2g-fs-cell: 12px; /* Cell font-size */
+
+    /* Transition speeds */
+    --m2g-trans: 150ms;
+
+    /* Layout */
+    --m2g-h: 40px; /* Form element height */
+}
+
+/* Styling */
+#mols2grid {
+    font-family: 'DejaVu', sans-serif;
+    font-size: var(--m2g-fs);
+}
+
+/* Fixes */
+#mols2grid *,
+#mols2grid *::before,
+#mols2grid *::after {
+    box-sizing: border-box;
+    outline: none;
+}
+
+
+
+/**
+ * Functions section
+ */
+
+#mols2grid .m2g-functions {
+    display: flex;
+}
+#mols2grid .m2g-functions .m2g-row {
+    flex: 0;
+    display: flex;
+}
+
+/* Individual elements don't scale */
+#mols2grid .m2g-functions .m2g-row > * {
+    flex: 0 0;
+    margin-right: 10px;
+}
+#mols2grid .m2g-functions .m2g-row:last-child > *:last-child {
+    margin-right: 0;
+}
+
+/* Row 1: pagination + gap + sort */
+#mols2grid .m2g-functions .m2g-row:first-child {
+    flex: 1; /* Scale */
+}
+#mols2grid .m2g-functions .m2g-gap {
+    /* The gap in between will scale, so the pagination
+    stays on the left, while the rest moves to the right */
+    flex: 1;
+    margin-right: 0;
+}
+
+
+
+/*
+ * Pagination
+ */
+
+#mols2grid ul.m2g-pagination {
+    /* Unset defaults */
+    list-style-type: none;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    margin-inline-start: 0;
+    margin-inline-end: 0;
+    padding-inline-start: 0;
+
+    /* Custom */
+    display: flex;
+}
+#mols2grid ul.m2g-pagination li {
+    background: var(--m2g-bg) ;
+    border: var(--m2g-border);
+    height: var(--m2g-h);
+    min-width: calc(var(--m2g-h) + 1px);
+    position: relative;
+    user-select: none;
+    
+    /* Compensate for double border */
+    margin-right: -1px;
+    
+    /* Center text */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#mols2grid ul.m2g-pagination li:last-child {
+    min-width: var(--m2g-h);
+}
+#mols2grid ul.m2g-pagination li a {
+    text-decoration: none;
+    color: var(--m2g-black);
+    padding: 0 10px;
+    width: 100%;
+    height: var(--m2g-h);
+    line-height: var(--m2g-h);
+    text-align: center;
+    /* Compensate for border so there's no gap between click areas  */
+    margin: 0 -1px;
+}
+
+/* Corner shape */
+#mols2grid ul.m2g-pagination li:first-child {
+    border-radius: var(--m2g-br-l);
+}
+#mols2grid ul.m2g-pagination li:last-child {
+    border-radius: var(--m2g-br-r);
+    margin-right: 0;
+}
+
+/* Focus state */
+#mols2grid ul.m2g-pagination li:focus-within {
+    border-color: var(--m2g-hl);
+    box-shadow: var(--m2g-hl-shadow);
+    z-index: 1;
+}
+
+/* Active state */
+#mols2grid ul.m2g-pagination li.active {
+    background: var(--m2g-hl);
+    z-index: 1;
+}
+#mols2grid ul.m2g-pagination li.active a {
+    cursor: default;
+    color: #fff;
+}
+
+/* Disabled sate */
+#mols2grid ul.m2g-pagination li.disabled a {
+    cursor: default;
+    color: rgba(0,0,0,.25);
+    pointer-events: none;
+}
+
+
+
+/*
+ * Dropdowns
+ */
+
+#mols2grid ::placeholder {
+    color: var(--m2g-black-soft);
+}
+#mols2grid .m2g-dropdown {
+    height: var(--m2g-h);
+    background: var(--m2g-bg);
+    border: var(--m2g-border);
+    border-radius: var(--m2g-br);
+    position: relative;
+}
+#mols2grid .m2g-dropdown select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    background: transparent;
+    border: none;
+    height: 100%;
+    padding: 0 13px;
+    min-width: 0;
+    max-width: 250px;
+    color: var(--m2g-black);
+    cursor: pointer;
+}
+
+/* Icon */
+#mols2grid .m2g-dropdown .m2g-icon {
+    width: 30px;
+    height: var(--m2g-h);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    pointer-events: none;
+}
+#mols2grid .m2g-dropdown .m2g-icon svg:not(.m2g-stroke) {
+    fill: var(--m2g-black);
+}
+#mols2grid .m2g-dropdown .m2g-icon svg.m2g-stroke {
+    stroke: var(--m2g-black);
+}
+
+/* Display */
+/* We hide the native select element because
+ * it is limited in styling. Instead, we display
+ * the selected value in a div. */
+#mols2grid .m2g-dropdown .m2g-display {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    pointer-events: none;
+    color: var(--m2g-black);
+    line-height: var(--m2g-h);
+    padding: 0 25px 0 13px;
+
+    /* Truncate dropdown text */
+    white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+/* Focus state */
+#mols2grid .m2g-dropdown:focus-within {
+    border-color: var(--m2g-hl);
+    box-shadow: var(--m2g-hl-shadow);
+}
+
+
+
+/**
+ * Action dropdown
+ */
+
+#mols2grid .m2g-dropdown.m2g-actions {
+    width: var(--m2g-h);
+    padding: 0;
+}
+#mols2grid .m2g-dropdown.m2g-actions select {
+    opacity: 0;
+    width: var(--m2g-h);
+}
+#mols2grid .m2g-dropdown.m2g-actions .m2g-icon {
+    width: var(--m2g-h);
+}
+
+
+
+/*
+ * Sort dropdown
+ */
+
+#mols2grid .m2g-dropdown.m2g-sort {
+    flex: 0 0 200px;
+    width: 200px; /* Needed in addition to flex-basis for small sizes! */
+    border-radius: var(--m2g-br);
+    background: var(--m2g-bg);
+    display: flex;
+}
+
+/* Dropdown */
+#mols2grid .m2g-dropdown.m2g-sort select {
+    flex: 1 1;
+    opacity: 0;
+    /* padding-right: 70px; Space for "Sort:" */
+    box-sizing: border-box;
+}
+
+/* Sort order */
+#mols2grid .m2g-dropdown.m2g-sort .m2g-order {
+    background: var(--m2g-bg) var(--m2g-icn-triangle) no-repeat center;
+    flex: 0 0 30px;
+    height: 100%;
+    border-left: var(--m2g-border);
+    cursor: pointer;
+}
+#mols2grid .m2g-dropdown.m2g-sort.m2d-arrow-desc .m2g-order {
+    transform: rotate(180deg);
+    border-left: none;
+    border-right: var(--m2g-border);
+}
+
+/* Display */
+#mols2grid .m2g-dropdown.m2g-sort .m2g-display {
+    right: 31px;
+    padding-right: 13px;
+}
+#mols2grid .m2g-dropdown.m2g-sort .m2g-display::before {
+    content: 'Sort: ';
+}
+
+/* Focus state */
+#mols2grid .m2g-dropdown.m2g-sort:focus-within .m2g-display,
+#mols2grid .m2g-dropdown.m2g-sort:focus-within .m2g-order {
+    background-color: transparent;
+}
+
+
+
+/*
+ * Search bar
+ */
+
+#mols2grid .m2g-search-wrap {
+    height: var(--m2g-h);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    background: var(--m2g-bg);
+    border: var(--m2g-border);
+    border-radius: var(--m2g-br);
+}
+#mols2grid .m2g-searchbar {
+    width: 170px;
+    height: var(--m2g-h);
+    padding: 0 13px;
+    border: none;
+    color: var(--m2g-black);
+    cursor: text;
+    background: transparent;
+}
+
+/* Focus state */
+#mols2grid .m2g-search-wrap:focus-within {
+    border-color: var(--m2g-hl);
+    box-shadow: var(--m2g-hl-shadow);
+}
+
+/* Option buttons */
+#mols2grid .m2g-search-options {
+    font-size: 12px;
+    display: flex;
+    height: calc(1.5em + .75rem);
+    line-height: calc(1.5em + .75rem);
+    margin-right: 5px;
+    border-radius: var(--m2g-br);
+    color: var(--m2g-black);
+}
+#mols2grid .m2g-search-options .m2g-option {
+    background: var(--m2g-black-10);
+    padding: 0 13px;
+    cursor: default;
+    user-select: none;
+}
+#mols2grid .m2g-search-options .m2g-option:not(.sel) {
+    cursor: pointer;
+}
+#mols2grid .m2g-search-options .m2g-option:first-child {
+    border-radius: 2px 0 0 2px;
+}
+#mols2grid .m2g-search-options .m2g-option:last-child {
+    border-radius: 0 2px 2px 0;
+}
+#mols2grid .m2g-search-options .m2g-option.sel {
+    background: var(--m2g-hl);
+    color: #fff;
+}
+
+
+
+/**
+ * Grid
+ */
+
+/* Container */
+#mols2grid .m2g-list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 1px; /* Compensate for negative padding on cell */
+    user-select: none;
+    margin: 0px;
+    margin-top: 20px;
+    font-family: 'DejaVu', sans-serif;
+    
+}
+
+/* Cell */
+#mols2grid .m2g-cell {
+    border: 1px solid #cccccc;
+    text-align: center;
+    vertical-align: top;
+    font-family: var(--font-family);
+    padding: 10px;
+    padding-top: max(10px, 20px);
+    margin: -1px -1px 0 0;
+    flex: 1 0 130px;
+    position: relative;
+    font-size: var(--m2g-fs-cell);
+    cursor: pointer;
+    color: var(--m2g-black);
+    overflow: hidden;
+    box-sizing: border-box;
+    background-color: white;
+}
+#mols2grid .m2g-cell:focus {
+    z-index: 1;
+    border-color: var(--m2g-hl);
+    box-shadow: var(--m2g-hl-shadow);
+}
+
+/* Phantom cells to maintain grid structure with less results */
+#mols2grid .m2g-cell.m2g-phantom {
+    border: none;
+    pointer-events: none;
+    height: 0;
+    padding: 0;
+}
+
+/* Checkbox & ID */
+#mols2grid .m2g-cb-wrap {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    display: flex;
+    border-radius: 2px;
+    font-size: 0;
+    line-height: 0;
+    padding: 3px;
+    padding-right: 0;
+}
+#mols2grid .m2g-cb-wrap input[type=checkbox] {
+    display: none;
+}
+#mols2grid .m2g-cb-wrap input[type=checkbox] + .m2g-cb {
+	width: 16px;
+	height: 16px;
+	box-sizing: border-box;
+	background: #fff;
+	border: var(--m2g-border);
+	border-radius: 2px;
+    margin-right: 5px;
+}
+#mols2grid .m2g-cb-wrap input[type=checkbox]:checked + .m2g-cb {
+    border: none;
+    background-color: var(--m2g-blue);
+    background-image: var(--m2g-icn-cb-white);
+}
+#mols2grid .m2g-tooltip {
+    /* This is a div spanning full cell size where the
+    tooltip is rendered around, because you can't attach
+    it to the parent due to list.js limitation. */
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0;
+}
+#mols2grid .m2g-cell:has(:checked) {
+    background: #ffd !important; /* Overrides user-set background color */
+}
+#mols2grid .data-mols2grid-id-display {
+    font-size: var(--m2g-fs-cell);
+    line-height: 16px;
+}
+#mols2grid .m2g-cb-wrap input[type=checkbox] + .data-mols2grid-id-display {
+    padding: 0 5px 0 5px;
+}
+#mols2grid .m2g-cb-wrap .data-name-display {
+    font-size: var(--m2g-fs);
+    line-height: 16px;
+}
+
+/* Info + callback button wrap (28px high) */
+#mols2grid .m2g-cell-actions {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    flex-direction: row;
+    font-size: 0;
+    line-height: 0;
+    
+    /* background: yellow; */
+}
+
+/* Info button */
+#mols2grid .m2g-info {
+    width: 28px;
+    height: 28px;
+    border-radius: 2px;
+    line-height: 28px;
+    font-size: min(14px, 12px);
+    font-family: Georgia, serif;
+    font-style: italic;
+    padding: 0;
+    text-align: center;
+}
+#mols2grid .m2g-keep-tooltip .m2g-info {
+    color: #fff;
+}
+#mols2grid .m2g-keep-tooltip .m2g-info::before {
+    content: 'i';
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+    background: var(--m2g-hl);
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    border-radius: 9px;
+}
+
+/* Callback button */
+#mols2grid .m2g-callback {
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+}
+#mols2grid .m2g-callback::after {
+    content: '';
+    display: block;
+    width: 16px;
+    height: 16px;
+    margin: 6px;
+    border: var(--m2g-border);
+    border-radius: 2px;
+    background: var(--m2g-bg) var(--m2g-icn-triangle) no-repeat center;
+    transform: rotate(-90deg);
+}
+
+/* Image */
+#mols2grid .m2g-cell .data-img {
+    padding: 0;
+}
+#mols2grid .m2g-cell img,
+#mols2grid .m2g-cell svg {
+    max-width: 100%;
+    height: auto;
+    padding: 0;
+}
+#mols2grid .m2g-cell svg > rect:first-child {
+    /* Remove the SVG background */
+    fill: transparent !important;
+}
+
+/* Text below image */
+.m2g-copy-blink {
+    animation: m2g-blink var(--m2g-trans) 3;
+}
+@keyframes m2g-blink {
+    0% {
+        opacity: 1;
+    }
+    49% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+/* Copyable text */
+.copy-me {
+    position: relative;
+    cursor: pointer;
+}
+
+
+
+/**
+ * Modal popup
+ * - - -
+ * Triggered by make_popup_callback()
+ * See https://mols2grid.readthedocs.io/en/latest/notebooks/callbacks.html#Display-a-popup-containing-descriptors
+ */
+
+/* Container */
+#m2g-modal-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--m2g-black-10);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    
+    /* Transition */
+    opacity: 0;
+    transition: opacity var(--m2g-trans) linear;
+}
+
+/* Modal */
+#m2g-modal {
+    background: #fff;
+    border-radius: var(--m2g-br);
+    box-shadow: 0 0 30px var(--m2g-black-10);
+    padding: 20px;
+    position: relative;
+    max-width: calc(100% - 80px);
+    max-height: calc(100% - 80px);
+    display: flex;
+    flex-direction: column;
+    min-width: 26px;
+
+    /* Transition */
+    opacity: 0;
+    transform: translate(0, 5px);
+    transition: transform var(--m2g-trans) ease-in-out, opacity var(--m2g-trans) linear;
+}
+#m2g-modal .m2g-modal-header {
+    flex: 0 0 26px;
+    margin-bottom: 10px;
+}
+#m2g-modal .m2g-modal-header h2 {
+    margin-bottom: 0;
+}
+#m2g-modal .m2g-modal-header h2 + p {
+    font-size: 15px;
+}
+#m2g-modal .m2g-modal-body {
+    flex: 1;
+    position: relative;
+}
+
+/* Transition */
+#m2g-modal-container.show {
+    opacity: 1;
+}
+#m2g-modal-container.show #m2g-modal {
+    opacity: 1;
+    transform: translate(0, 0);
+}
+
+/* Header + close btn */
+#m2g-modal h2 {
+    line-height: 26px;
+    padding-right: 40px;
+    text-transform: capitalize;
+}
+#m2g-modal h3 {
+    
+}
+#m2g-modal button.close {
+    background: transparent;
+    padding: 0;
+    color: var(--m2g-black);
+    font-size: 1.5rem;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 13px;
+    right: 13px;
+    border: none;
+}
+
+/* Image */
+#m2g-modal .svg-wrap svg {
+    max-width: 100%;
+    margin-bottom: 20px;
+}
+
+/* Separator */
+hr {
+    width: 100%;
+    height: 1px;
+    background: #ddd;
+    margin: 15px 0;
+    border: none;
+}
+
+
+
+/**
+ * Hover states
+ */
+@media (hover:hover) {
+    /* Pagination */
+    #mols2grid ul.m2g-pagination li:not(.active):not(.disabled):hover {
+        background: #f0f0f0;
+        z-index: 1;
+    }
+    #mols2grid ul.m2g-pagination li.active + li:hover {
+        /* Keeping the hover border consiistent */
+        margin-left: 1px;
+        border-left: none;
+        min-width: 40px;
+    }
+
+    /* Dropdowns & search */
+    #mols2grid .m2g-dropdown:not(:focus-within):hover,
+    #mols2grid .m2g-search-wrap:not(:focus-within):hover,
+    #mols2grid .m2g-sort:not(:focus-within) .m2g-order:hover {
+        background-color: #f0f0f0;
+    }
+    #mols2grid .m2g-search-wrap:not(:focus-within):hover {
+        background: #fff;
+        border-color: rgba(0,0,0,.3);
+    }
+    /* Hocus pocus to have separate hover states for dropdown and arrow */
+    #mols2grid .m2g-dropdown.m2g-sort:not(:focus-within):hover .m2g-order:not(:hover) + .m2g-display {
+        background-color: transparent;
+    }
+
+    /* Search options */
+    #mols2grid .m2g-search-options .m2g-option:not(.sel):hover {
+        background: rgba(0,0,0,.15);
+    }
+
+    /* Grid */
+    /* Note: this is in an ::after pseudo element, so the transparent
+    hover color plays nice with the cell background color. */
+    #mols2grid .m2g-cell:hover::after {
+        content: '';
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(0,0,0,0.05);
+        pointer-events: none;
+    }
+
+    /* info button */
+    #mols2grid .m2g-info:hover::before {
+        content: 'i';
+        color: #fff;
+        width: 18px;
+        height: 18px;
+        line-height: 18px;
+        background: var(--m2g-hl);
+        position: absolute;
+        left: 5px;
+        top: 5px;
+        border-radius: 9px;
+    }
+    
+    /* Callback button */
+    #mols2grid .m2g-callback:hover::after {
+        background-color: var(--m2g-black);
+        background-image: var(--m2g-icn-triangle-white);
+        border-color: transparent;
+    }
+
+    /* Copyable text */
+    .copy-me:hover {
+        text-decoration: underline;
+        text-decoration-color: var(--m2g-blue);
+    }
+}
+
+
+
+/**
+ * Responsive behavior.
+ * - - -
+ * Note: container queries won't work in older browsers,
+ * but this is purely aesthetical behavior so that's ok.
+ * https://caniuse.com/css-container-queries
+ */
+
+/* This sets the msg-list div as reference container */
+#mols2grid {
+    container-type: inline-size;
+}
+
+
+
+/**
+ * Functions section
+ */
+
+/* When there's not enough space to put everything in one row, we break it into two.
+ * - - -
+ * 870px = pagination 280 + sort 200 + search 300 + menu 40 + (3*10 gap) = 850 + 20 buffer.
+ * Buffer required because the button width inside the search depends on the font.
+ */
+@container (max-width: 870px) {
+    #mols2grid .m2g-functions {
+        flex-direction: column-reverse;
+        gap: 10px;
+    }
+    #mols2grid .m2g-functions .m2g-row:last-child {
+        justify-content: flex-end;
+    }
+    #mols2grid .m2g-functions .m2g-row:first-child *:last-child {
+        margin-right: 0;
+    }
+}
+
+/* When there's not enough room for pagination + sort on one row,
+ * we reduce the sort drodpwon width.
+ */
+@container (max-width: 500px) {
+    #mols2grid .m2g-functions .m2g-sort {
+        width: 80px;
+        flex-basis: 80px;
+    }
+    #mols2grid .m2g-functions .m2g-sort .m2g-display {
+        font-size: 0;
+        line-height: 0;
+        padding-right: 0;
+    }
+    #mols2grid .m2g-functions .m2g-sort .m2g-display::before {
+        content: 'Sort';
+        font-size: var(--m2g-fs);
+        line-height: var(--m2g-h);
+    }
+}
+
+/* When there's not enough room for pagination + reduced sort on one row,
+ * we reduce the pagination width.
+ */
+@container (max-width: 500px) {
+    /* We're overriding min-width from different
+    locations, including responsive rules */
+    #mols2grid ul.m2g-pagination li,
+    #mols2grid ul.m2g-pagination li:last-child,
+    #mols2grid ul.m2g-pagination li.active + li:hover {
+        min-width: 0;
+    }
+}
+
+/* When there's not enough room for searchbar + menu
+ * we scale down the searchbar to fit the container.
+ */
+@container (max-width: 370px) {
+    #mols2grid .m2g-functions .m2g-row .m2g-search-wrap {
+        flex: 1;
+    }
+    #mols2grid .m2g-searchbar {
+        width: calc(100% - 50px);
+    }
+    #mols2grid .m2g-search-options {
+        width: 50px;
+    }
+
+    /* Collapse options in T/M buttons */
+    #mols2grid .m2g-search-options .m2g-option {
+        width: 25px;
+        text-align: center;
+        padding: 0;
+        overflow: hidden;
+    }
+    #mols2grid .m2g-search-options .m2g-option:first-child::before {
+        content: 'T\A'
+    }
+    #mols2grid .m2g-search-options .m2g-option:last-child::before {
+        content: 'S\A'
+    }
+}
+
+
+
+/**
+ * Grid
+ */
+
+/* When there's room for 5 columns, fall back to 4 */
+@container (min-width: 519px) and (max-width: 779px) {
+    #mols2grid .m2g-cell {
+        flex-basis: calc(100% / 4);
+    }
+}
+
+/* When there's room for 7-11 columns, fall back to 6 */
+@container (min-width: 779px) and (max-width: 1559px) {
+    #mols2grid .m2g-cell {
+        flex-basis: calc(100% / 6);
+    }
+}
+
+/* When there's room for 13+ columns, fall back to 12 */
+@container (min-width: 1559px) {
+    #mols2grid .m2g-cell {
+        flex-basis: calc(100% / 12);
+    }
+}
+
+            /* Custom CSS */
+            
+        </style>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/2.3.1/list.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@rdkit/rdkit@2022.3.1/Code/MinimalLib/dist/RDKit_minimal.js"></script>
+        <script>
+    // Set iframe height to fit content.
+    function fitIframe(iframe) {
+        // Ignore when there's no iframe
+        if (!iframe) return
+
+        // Only fit height when no specific height was given.
+        if (iframe.getAttribute('height')) return;
+
+        // Initial fit + refit whenever the window width changes.
+        _fit()
+        $(window).on('resize', function() {
+            if (window.innerWidth != window.prevInnerWidth) {
+                window.prevInnerWidth = window.innerWidth
+                _fit();
+            }
+        })
+
+        // Fit iframe height to content height.
+        function _fit() {
+            var height = iframe.contentDocument.body.scrollHeight + 18 + 'px';
+            iframe.style.height = height;
+        }
+    }
+</script>
+
+<!-- prettier-ignore -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+        
+        <!-- Custom header -->
+        
+
+
+
+
+
+
+        <div id="mols2grid" class="grid-default">
+            <!-- Pagination & search -->
+            <div class="m2g-functions">
+                
+                <div class="m2g-row">
+                    <!-- Pagination -->
+                    <ul class="m2g-pagination" class="d-flex"></ul>
+                    <div class="m2g-gap"></div>
+
+                    <!-- Sort dropdown -->
+                    <div class="m2g-dropdown m2g-sort">
+                        <select>
+                            
+                            
+                                
+                                
+                                
+                            <option value="mols2grid-id">Index</option>
+                                
+                            
+                                
+                                
+                                
+                            <option value="data-ID">ID</option>
+                                
+                            
+                                
+                                
+                                
+                            <option value="data-Molecule-Name">Molecule-Name</option>
+                                
+                            
+                                
+                                
+                                
+                            <option value="data-Responsive" selected>Responsive</option>
+                                
+                            
+                            
+                            <option value="checkbox">Selected</option>
+                            
+                        </select>
+                        <div class="m2g-order"></div>
+                        <div class="m2g-display">
+                            Responsive
+                        </div>
+                    </div>
+                </div>
+                <div class="m2g-row">
+                    <!-- Search bar -->
+                    <div class="m2g-search-wrap">
+                        <input
+                            type="text"
+                            class="m2g-searchbar form-control"
+                            placeholder="Search"
+                            aria-label="Search"
+                            aria-describedby="basic-addon1"
+                        />
+                        <div class="m2g-search-options">
+                            <div class="m2g-option m2g-search-text sel">Text</div>
+                            <div class="m2g-option m2g-search-smarts">SMARTS</div>
+                        </div>
+                    </div>
+
+                    <!-- Action dropdown -->
+                    <div class="m2g-dropdown m2g-actions">
+                        <select>
+                            <option hidden>-</option>
+                            <option value="select-all">Select all</option>
+                            <option value="select-matching">Select matching</option>
+                            <option value="unselect-all">Unselect all</option>
+                            <option value="invert">Invert</option>
+                            <option value="copy">Copy to clipboard</option>
+                            <option value="save-smiles">Save SMILES</option>
+                            <option value="save-csv">Save CSV</option>
+                        </select>
+                        <div class="m2g-icon">
+                            <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M11.5 4C11.5 4.82843 10.8284 5.5 10 5.5C9.17157 5.5 8.5 4.82843 8.5 4C8.5 3.17157 9.17157 2.5 10 2.5C10.8284 2.5 11.5 3.17157 11.5 4ZM11.5 10C11.5 10.8284 10.8284 11.5 10 11.5C9.17157 11.5 8.5 10.8284 8.5 10C8.5 9.17157 9.17157 8.5 10 8.5C10.8284 8.5 11.5 9.17157 11.5 10ZM10 17.5C10.8284 17.5 11.5 16.8284 11.5 16C11.5 15.1716 10.8284 14.5 10 14.5C9.17157 14.5 8.5 15.1716 8.5 16C8.5 16.8284 9.17157 17.5 10 17.5Z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid -->
+            
+            <div class="m2g-list"><div class="m2g-cell" data-mols2grid-id="0" tabindex="0"><div class="m2g-cb-wrap"><input type="checkbox" tabindex="-1" class="position-relative float-left cached_checkbox"><div class="m2g-cb"></div><div class="data-mols2grid-id-display"></div></div><div class="m2g-cell-actions"></div><div class="data data-img copy-me"></div><div class="data data-ID copy-me"></div><div class="data data-Molecule-Name copy-me"></div><div class="data data-Responsive copy-me"></div><div class="data data-SMILES copy-me" style="display: none;"></div></div></div>
+        </div>
+        <script>
+            // list.js
+var listObj = new List('mols2grid', {
+    listClass: 'm2g-list',
+    valueNames: [{data: ['mols2grid-id', 'cellstyle']}, 'data-SMILES', 'data-Molecule-Name', 'data-Responsive', 'data-img', 'data-ID', 'data-mols2grid-id', 'data-mols2grid-id-display', { attr: 'style', name: 'cellstyle' }],
+    item: '<div class="m2g-cell" data-mols2grid-id="0" tabindex="0"><div class="m2g-cb-wrap"><input type="checkbox" tabindex="-1" class="position-relative float-left cached_checkbox"><div class="m2g-cb"></div><div class="data-mols2grid-id-display"></div></div><div class="m2g-cell-actions"></div><div class="data data-img copy-me"></div><div class="data data-ID copy-me"></div><div class="data data-Molecule-Name copy-me"></div><div class="data data-Responsive copy-me"></div><div class="data data-SMILES copy-me" style="display: none;"></div></div>',
+    page: 350,
+    pagination: {
+        paginationClass: "m2g-pagination",
+        item: '<li class="page-item"><a class="page page-link" href="#" onclick="event.preventDefault()"></a></li>',
+        innerWindow: 1,
+        outerWindow: 1,
+    },
+});
+listObj.remove("mols2grid-id", "0");
+listObj.add([{"data-SMILES": "CC(C)CC1=NC=CN=C1OC", "data-Molecule-Name": "2-isobutyl-3-methoxypyrazine", "data-Responsive": 0, "data-img": null, "data-ID": 48665, "mols2grid-id": 0, "data-mols2grid-id-display": 0, "cellstyle": ""}, {"data-SMILES": "CC1=C(C=CO1)S", "data-Molecule-Name": "2-Methylfuran-3-thiol", "data-Responsive": 0, "data-img": null, "data-ID": 31526, "mols2grid-id": 211, "data-mols2grid-id-display": 211, "cellstyle": ""}, {"data-SMILES": "C1=COC(=C1)CS", "data-Molecule-Name": "2-Furfurylthiol", "data-Responsive": 0, "data-img": null, "data-ID": 39943, "mols2grid-id": 210, "data-mols2grid-id-display": 210, "cellstyle": ""}, {"data-SMILES": "CCOC(=O)CCSC", "data-Molecule-Name": "Ethyl 3-methylsulfanylpropanoate", "data-Responsive": 0, "data-img": null, "data-ID": 38856, "mols2grid-id": 209, "data-mols2grid-id-display": 209, "cellstyle": ""}, {"data-SMILES": "CCC(=O)C(C)S", "data-Molecule-Name": "2-sulfanylpentan-3-one", "data-Responsive": 0, "data-img": null, "data-ID": 31992, "mols2grid-id": 208, "data-mols2grid-id-display": 208, "cellstyle": ""}, {"data-SMILES": "CCC(C(=O)C)S", "data-Molecule-Name": "3-Sulfanylpentan-2-one", "data-Responsive": 0, "data-img": null, "data-ID": 31977, "mols2grid-id": 207, "data-mols2grid-id-display": 207, "cellstyle": ""}, {"data-SMILES": "CC(=O)C1=NC=CN=C1", "data-Molecule-Name": "1-Pyrazin-2-ylethanone", "data-Responsive": 0, "data-img": null, "data-ID": 9325, "mols2grid-id": 206, "data-mols2grid-id-display": 206, "cellstyle": ""}, {"data-SMILES": "CC1=C(C=CO1)SSC", "data-Molecule-Name": "2-Methyl-3-(methyldisulfanyl)furan", "data-Responsive": 0, "data-img": null, "data-ID": 31966, "mols2grid-id": 212, "data-mols2grid-id-display": 212, "cellstyle": ""}, {"data-SMILES": "COC1=C(C(=CC=C1)OC)O", "data-Molecule-Name": "2,6-Dimethoxyphenol", "data-Responsive": 0, "data-img": null, "data-ID": 20061, "mols2grid-id": 205, "data-mols2grid-id-display": 205, "cellstyle": ""}, {"data-SMILES": "C=CC1=CC=C(C=C1)O", "data-Molecule-Name": "4-Ethenylphenol", "data-Responsive": 0, "data-img": null, "data-ID": 11941, "mols2grid-id": 203, "data-mols2grid-id-display": 203, "cellstyle": ""}, {"data-SMILES": "CCCC1=CC(=C(C=C1)O)OC", "data-Molecule-Name": "2-Methoxy-4-propylphenol", "data-Responsive": 0, "data-img": null, "data-ID": 29622, "mols2grid-id": 202, "data-mols2grid-id-display": 202, "cellstyle": ""}, {"data-SMILES": "CCC1=CC(=C(C=C1)O)OC", "data-Molecule-Name": "4-Ethyl-2-methoxyphenol", "data-Responsive": 0, "data-img": null, "data-ID": 8670, "mols2grid-id": 201, "data-mols2grid-id-display": 201, "cellstyle": ""}, {"data-SMILES": "CC1=CC(=C(C=C1)OC)O", "data-Molecule-Name": "2-Methoxy-5-methylphenol", "data-Responsive": 0, "data-img": null, "data-ID": 16420, "mols2grid-id": 200, "data-mols2grid-id-display": 200, "cellstyle": ""}, {"data-SMILES": "CC1=C(C(=CC=C1)C)O", "data-Molecule-Name": "2,6-Dimethylphenol", "data-Responsive": 0, "data-img": null, "data-ID": 27195, "mols2grid-id": 199, "data-mols2grid-id-display": 199, "cellstyle": ""}, {"data-SMILES": "CC1=CC(=C(C=C1)O)C", "data-Molecule-Name": "2,4-Dimethylphenol", "data-Responsive": 0, "data-img": null, "data-ID": 21404, "mols2grid-id": 198, "data-mols2grid-id-display": 198, "cellstyle": ""}, {"data-SMILES": "COC1=C(C=CC(=C1)C=C)O", "data-Molecule-Name": "4-Ethenyl-2-methoxyphenol", "data-Responsive": 0, "data-img": null, "data-ID": 38843, "mols2grid-id": 204, "data-mols2grid-id-display": 204, "cellstyle": ""}, {"data-SMILES": "CC1=CC=C(C=C1)O", "data-Molecule-Name": "4-Methylphenol", "data-Responsive": 0, "data-img": null, "data-ID": 18105, "mols2grid-id": 197, "data-mols2grid-id-display": 197, "cellstyle": ""}, {"data-SMILES": "CSCSC", "data-Molecule-Name": "Bis(methylsulfanyl)methane", "data-Responsive": 0, "data-img": null, "data-ID": 23124, "mols2grid-id": 214, "data-mols2grid-id-display": 214, "cellstyle": ""}, {"data-SMILES": "CC1=CCC(CC1)C(C)(C)S", "data-Molecule-Name": "p-Menthene-8-thiol", "data-Responsive": 0, "data-img": null, "data-ID": 40393, "mols2grid-id": 216, "data-mols2grid-id-display": 216, "cellstyle": ""}, {"data-SMILES": "CCC(C)C=O", "data-Molecule-Name": "2-Methylbutanal", "data-Responsive": 0, "data-img": null, "data-ID": 7470, "mols2grid-id": 230, "data-mols2grid-id-display": 230, "cellstyle": ""}, {"data-SMILES": "CCC=O", "data-Molecule-Name": "Propanal", "data-Responsive": 0, "data-img": null, "data-ID": 24989, "mols2grid-id": 229, "data-mols2grid-id-display": 229, "cellstyle": ""}, {"data-SMILES": "C=CCSSCC=C", "data-Molecule-Name": "Diallyl disulfide", "data-Responsive": 0, "data-img": null, "data-ID": 29123, "mols2grid-id": 228, "data-mols2grid-id-display": 228, "cellstyle": ""}, {"data-SMILES": "CSCC=C", "data-Molecule-Name": "3-(Methylsulfanylprop-1-ene", "data-Responsive": 0, "data-img": null, "data-ID": 27179, "mols2grid-id": 227, "data-mols2grid-id-display": 227, "cellstyle": ""}, {"data-SMILES": "CCCSSSCCC", "data-Molecule-Name": "1-(Propyltrisulfanyl)propane", "data-Responsive": 0, "data-img": null, "data-ID": 12848, "mols2grid-id": 226, "data-mols2grid-id-display": 226, "cellstyle": ""}, {"data-SMILES": "CCCSSCCC", "data-Molecule-Name": "1-(Propyldisulfanyl)propane", "data-Responsive": 0, "data-img": null, "data-ID": 6499, "mols2grid-id": 225, "data-mols2grid-id-display": 225, "cellstyle": ""}, {"data-SMILES": "C1=CSC(=C1)CS", "data-Molecule-Name": "Thiophen-2-ylmethanethiol", "data-Responsive": 0, "data-img": null, "data-ID": 12853, "mols2grid-id": 215, "data-mols2grid-id-display": 215, "cellstyle": ""}, {"data-SMILES": "CCCSSSC", "data-Molecule-Name": "1-(Methyltrisulfanyl)propane", "data-Responsive": 0, "data-img": null, "data-ID": 40386, "mols2grid-id": 224, "data-mols2grid-id-display": 224, "cellstyle": ""}, {"data-SMILES": "CSSC", "data-Molecule-Name": "Dimethyl disulfide", "data-Responsive": 0, "data-img": null, "data-ID": 35308, "mols2grid-id": 222, "data-mols2grid-id-display": 222, "cellstyle": ""}, {"data-SMILES": "CSC", "data-Molecule-Name": "Methylsulfanylmethane", "data-Responsive": 0, "data-img": null, "data-ID": 30238, "mols2grid-id": 221, "data-mols2grid-id-display": 221, "cellstyle": ""}, {"data-SMILES": "CC(C)(CCOC)S", "data-Molecule-Name": "4-Methoxy-2-methylbutane-2-thiol", "data-Responsive": 0, "data-img": null, "data-ID": 38391, "mols2grid-id": 220, "data-mols2grid-id-display": 220, "cellstyle": ""}, {"data-SMILES": "CC(=O)CC(C)(C)S", "data-Molecule-Name": "4-Methyl-4-sulfanylpentan-2-one", "data-Responsive": 0, "data-img": null, "data-ID": 30615, "mols2grid-id": 219, "data-mols2grid-id-display": 219, "cellstyle": ""}, {"data-SMILES": "CC(C)(CCOC=O)S", "data-Molecule-Name": "(3-Methyl-3-sulfanylbutyl) formate", "data-Responsive": 0, "data-img": null, "data-ID": 34774, "mols2grid-id": 218, "data-mols2grid-id-display": 218, "cellstyle": ""}, {"data-SMILES": "CCCC(CCO)S", "data-Molecule-Name": "3-Sulfanylhexan-1-ol", "data-Responsive": 0, "data-img": null, "data-ID": 32009, "mols2grid-id": 217, "data-mols2grid-id-display": 217, "cellstyle": ""}, {"data-SMILES": "CSSSC", "data-Molecule-Name": "(Methyltrisulfanyl)methane", "data-Responsive": 0, "data-img": null, "data-ID": 38863, "mols2grid-id": 223, "data-mols2grid-id-display": 223, "cellstyle": ""}, {"data-SMILES": "CC1=CC(=CC=C1)O", "data-Molecule-Name": "3-Methylphenol", "data-Responsive": 0, "data-img": null, "data-ID": 31124, "mols2grid-id": 196, "data-mols2grid-id-display": 196, "cellstyle": ""}, {"data-SMILES": "CC1=CC=CC=C1O", "data-Molecule-Name": "2-Methylphenol", "data-Responsive": 0, "data-img": null, "data-ID": 31093, "mols2grid-id": 195, "data-mols2grid-id-display": 195, "cellstyle": ""}, {"data-SMILES": "CCC1=CC=C(C=C1)O", "data-Molecule-Name": "4-Ethylphenol", "data-Responsive": 0, "data-img": null, "data-ID": 15799, "mols2grid-id": 194, "data-mols2grid-id-display": 194, "cellstyle": ""}, {"data-SMILES": "CCOC(=O)C(C)C", "data-Molecule-Name": "Ethyl isobutyrate", "data-Responsive": 0, "data-img": null, "data-ID": 4573, "mols2grid-id": 171, "data-mols2grid-id-display": 171, "cellstyle": ""}, {"data-SMILES": "CCCCCCCCCC(=O)O", "data-Molecule-Name": "Decanoic acid", "data-Responsive": 0, "data-img": null, "data-ID": 1069, "mols2grid-id": 169, "data-mols2grid-id-display": 169, "cellstyle": ""}, {"data-SMILES": "C1=CC=C2C(=C1)C=CC(=O)O2", "data-Molecule-Name": "Coumarin", "data-Responsive": 0, "data-img": null, "data-ID": 5709, "mols2grid-id": 168, "data-mols2grid-id-display": 168, "cellstyle": ""}, {"data-SMILES": "CCCCOC=O", "data-Molecule-Name": "Butyl formate", "data-Responsive": 0, "data-img": null, "data-ID": 2832, "mols2grid-id": 167, "data-mols2grid-id-display": 167, "cellstyle": ""}, {"data-SMILES": "CCCCOC(=O)C(C)OC(=O)CCC", "data-Molecule-Name": "Butyl butyryllactate", "data-Responsive": 0, "data-img": null, "data-ID": 2908, "mols2grid-id": 166, "data-mols2grid-id-display": 166, "cellstyle": ""}, {"data-SMILES": "C1=CC=CC=C1", "data-Molecule-Name": "Benzene", "data-Responsive": 0, "data-img": null, "data-ID": 4071, "mols2grid-id": 164, "data-mols2grid-id-display": 164, "cellstyle": ""}, {"data-SMILES": "CCCCCCOC(=O)C", "data-Molecule-Name": "Hexyl acetate", "data-Responsive": 0, "data-img": null, "data-ID": 201, "mols2grid-id": 172, "data-mols2grid-id-display": 172, "cellstyle": ""}, {"data-SMILES": "CCCCCC(=O)OCCCCC", "data-Molecule-Name": "Amyl hexanoate", "data-Responsive": 0, "data-img": null, "data-ID": 4743, "mols2grid-id": 163, "data-mols2grid-id-display": 163, "cellstyle": ""}, {"data-SMILES": "CCC(=O)C(=O)CC", "data-Molecule-Name": "3,4-Hexanedione", "data-Responsive": 0, "data-img": null, "data-ID": 2028, "mols2grid-id": 158, "data-mols2grid-id-display": 158, "cellstyle": ""}, {"data-SMILES": "CCCC(=O)C(=O)C", "data-Molecule-Name": "2,3-Hexanedione", "data-Responsive": 0, "data-img": null, "data-ID": 2678, "mols2grid-id": 155, "data-mols2grid-id-display": 155, "cellstyle": ""}, {"data-SMILES": "CCCC(=O)C", "data-Molecule-Name": "2-Pentanone", "data-Responsive": 0, "data-img": null, "data-ID": 5022, "mols2grid-id": 154, "data-mols2grid-id-display": 154, "cellstyle": ""}, {"data-SMILES": "CCCCC(=O)C", "data-Molecule-Name": "2-Hexanone", "data-Responsive": 0, "data-img": null, "data-ID": 3575, "mols2grid-id": 151, "data-mols2grid-id-display": 151, "cellstyle": ""}, {"data-SMILES": "C1C2=CC=CC=C2OC1=O", "data-Molecule-Name": "2-Coumaranone", "data-Responsive": 0, "data-img": null, "data-ID": 48, "mols2grid-id": 150, "data-mols2grid-id-display": 150, "cellstyle": ""}, {"data-SMILES": "C[C@]12CC[C@H](C1(C)C)CC2=O", "data-Molecule-Name": "(-)-Camphor", "data-Responsive": 0, "data-img": null, "data-ID": 657, "mols2grid-id": 148, "data-mols2grid-id-display": 148, "cellstyle": ""}, {"data-SMILES": "C1=CC=C2C(=C1)C(=CC(=O)O2)O", "data-Molecule-Name": "4-Hydroxycoumarin", "data-Responsive": 0, "data-img": null, "data-ID": 4509, "mols2grid-id": 160, "data-mols2grid-id-display": 160, "cellstyle": ""}, {"data-SMILES": "CC(C)(CCCC1=CCC(CC1)C=O)O", "data-Molecule-Name": "Lyral", "data-Responsive": 0, "data-img": null, "data-ID": 3309, "mols2grid-id": 173, "data-mols2grid-id-display": 173, "cellstyle": ""}, {"data-SMILES": "CC(=O)OC1=CC=CC=C1", "data-Molecule-Name": "Phenyl acetate", "data-Responsive": 0, "data-img": null, "data-ID": 1562, "mols2grid-id": 176, "data-mols2grid-id-display": 176, "cellstyle": ""}, {"data-SMILES": "CC(=CCOC(=O)C)C", "data-Molecule-Name": "Prenyl acetate", "data-Responsive": 0, "data-img": null, "data-ID": 5120, "mols2grid-id": 177, "data-mols2grid-id-display": 177, "cellstyle": ""}, {"data-SMILES": "CCC1=CC(=CC=C1)O", "data-Molecule-Name": "3-Ethylphenol", "data-Responsive": 0, "data-img": null, "data-ID": 15345, "mols2grid-id": 193, "data-mols2grid-id-display": 193, "cellstyle": ""}, {"data-SMILES": "CC1CCOC(C1)C=C(C)C", "data-Molecule-Name": "Rose oxide", "data-Responsive": 0, "data-img": null, "data-ID": 9311, "mols2grid-id": 192, "data-mols2grid-id-display": 192, "cellstyle": ""}, {"data-SMILES": "CC=CC(=O)C1=C(C=CCC1(C)C)C", "data-Molecule-Name": "1-(2,6,6-Trimethylcyclohexa-1,3-dien-1-yl)-2-buten-1-one", "data-Responsive": 0, "data-img": null, "data-ID": 29577, "mols2grid-id": 191, "data-mols2grid-id-display": 191, "cellstyle": ""}, {"data-SMILES": "CC(C)C12CCC(=C)C1C2", "data-Molecule-Name": "Sabinene", "data-Responsive": 0, "data-img": null, "data-ID": 25001, "mols2grid-id": 190, "data-mols2grid-id-display": 190, "cellstyle": ""}, {"data-SMILES": "CC1([C@@H]2CCC(=C)[C@H]1C2)C", "data-Molecule-Name": "(1R,5R)-6,6-Dimethyl-2-methylenebicyclo[3.1.1]heptane", "data-Responsive": 0, "data-img": null, "data-ID": 35320, "mols2grid-id": 189, "data-mols2grid-id-display": 189, "cellstyle": ""}, {"data-SMILES": "CC1([C@H]2CCC(=C)[C@@H]1C2)C", "data-Molecule-Name": "(1S,5S)-6,6-Dimethyl-2-methylenebicyclo[3.1.1]heptane", "data-Responsive": 0, "data-img": null, "data-ID": 35317, "mols2grid-id": 188, "data-mols2grid-id-display": 188, "cellstyle": ""}, {"data-SMILES": "CC1=CC[C@@H]2C[C@H]1C2(C)C", "data-Molecule-Name": "(1R,5R)-2,6,6-Trimethylbicyclo[3.1.1]hept-2-ene", "data-Responsive": 0, "data-img": null, "data-ID": 12964, "mols2grid-id": 187, "data-mols2grid-id-display": 187, "cellstyle": ""}, {"data-SMILES": "CC1=CC[C@H]2C[C@@H]1C2(C)C", "data-Molecule-Name": "(1S,5S)-2,6,6-Trimethylbicyclo[3.1.1]hept-2-ene", "data-Responsive": 0, "data-img": null, "data-ID": 12961, "mols2grid-id": 186, "data-mols2grid-id-display": 186, "cellstyle": ""}, {"data-SMILES": "CC1=CC[C@H](CC1)C(C)(C)O", "data-Molecule-Name": "2-[(1S)-4-methylcyclohex-3-en-1-yl]propan-2-ol", "data-Responsive": 0, "data-img": null, "data-ID": 35836, "mols2grid-id": 185, "data-mols2grid-id-display": 185, "cellstyle": ""}, {"data-SMILES": "CC1=CCC(C=C1)C(C)C", "data-Molecule-Name": "2-Methyl-5-propan-2-ylcyclohexa-1,3-diene", "data-Responsive": 0, "data-img": null, "data-ID": 27612, "mols2grid-id": 184, "data-mols2grid-id-display": 184, "cellstyle": ""}, {"data-SMILES": "CC(=CCCC(=C)C=C)C", "data-Molecule-Name": "7-Methyl-3-methylene-1,6-octadiene", "data-Responsive": 0, "data-img": null, "data-ID": 32020, "mols2grid-id": 182, "data-mols2grid-id-display": 182, "cellstyle": ""}, {"data-SMILES": "CCCCCC/C=C\\CCC=O", "data-Molecule-Name": "(Z)-4-undecenal", "data-Responsive": 0, "data-img": null, "data-ID": 30087, "mols2grid-id": 181, "data-mols2grid-id-display": 181, "cellstyle": ""}, {"data-SMILES": "CCC1CCC(=O)O1", "data-Molecule-Name": "gamma-Caprolactone", "data-Responsive": 0, "data-img": null, "data-ID": 1689, "mols2grid-id": 180, "data-mols2grid-id-display": 180, "cellstyle": ""}, {"data-SMILES": "COC1=C(C=CC(=C1)C(=O)O)O", "data-Molecule-Name": "Vanillic acid", "data-Responsive": 0, "data-img": null, "data-ID": 4642, "mols2grid-id": 179, "data-mols2grid-id-display": 179, "cellstyle": ""}, {"data-SMILES": "CCC(=O)O", "data-Molecule-Name": "Propionic acid", "data-Responsive": 0, "data-img": null, "data-ID": 4928, "mols2grid-id": 178, "data-mols2grid-id-display": 178, "cellstyle": ""}, {"data-SMILES": "CC(C)CC=O", "data-Molecule-Name": "3-Methylbutanal", "data-Responsive": 0, "data-img": null, "data-ID": 38399, "mols2grid-id": 231, "data-mols2grid-id-display": 231, "cellstyle": ""}, {"data-SMILES": "CC[C@H](C1=CC=CC=C1)C(=O)O", "data-Molecule-Name": "(R)-(-)-2-Phenylbutyric acid", "data-Responsive": 0, "data-img": null, "data-ID": 3161, "mols2grid-id": 147, "data-mols2grid-id-display": 147, "cellstyle": ""}, {"data-SMILES": "CCC/C=C/C=O", "data-Molecule-Name": "(E)-2-Hexenal", "data-Responsive": 0, "data-img": null, "data-ID": 24035, "mols2grid-id": 232, "data-mols2grid-id-display": 232, "cellstyle": ""}, {"data-SMILES": "CCCC/C=C/C=O", "data-Molecule-Name": "(E)-2-Heptenal", "data-Responsive": 0, "data-img": null, "data-ID": 24994, "mols2grid-id": 234, "data-mols2grid-id-display": 234, "cellstyle": ""}, {"data-SMILES": "CCCCC1C(CC(=O)O1)C", "data-Molecule-Name": "Whiskey lactone", "data-Responsive": 0, "data-img": null, "data-ID": 35278, "mols2grid-id": 291, "data-mols2grid-id-display": 291, "cellstyle": ""}, {"data-SMILES": "CCCCCCCCC1CCC(=O)O1", "data-Molecule-Name": "5-Octyloxolan-2-one", "data-Responsive": 0, "data-img": null, "data-ID": 35228, "mols2grid-id": 290, "data-mols2grid-id-display": 290, "cellstyle": ""}, {"data-SMILES": "CCCCCCCC1CCCC(=O)O1", "data-Molecule-Name": "6-Heptyloxan-2-one", "data-Responsive": 0, "data-img": null, "data-ID": 30619, "mols2grid-id": 289, "data-mols2grid-id-display": 289, "cellstyle": ""}, {"data-SMILES": "CCCCCCCC1CCC(=O)O1", "data-Molecule-Name": "5-Heptyloxolan-2-one", "data-Responsive": 0, "data-img": null, "data-ID": 29571, "mols2grid-id": 288, "data-mols2grid-id-display": 288, "cellstyle": ""}, {"data-SMILES": "CCCCCC1CCCC(=O)O1", "data-Molecule-Name": "6-Pentyloxan-2-one", "data-Responsive": 0, "data-img": null, "data-ID": 12890, "mols2grid-id": 287, "data-mols2grid-id-display": 287, "cellstyle": ""}, {"data-SMILES": "CCCCCCC1CCC(=O)O1", "data-Molecule-Name": "5-Hexyloxolan-2-one", "data-Responsive": 0, "data-img": null, "data-ID": 16426, "mols2grid-id": 286, "data-mols2grid-id-display": 286, "cellstyle": ""}, {"data-SMILES": "CCC(=O)C(=O)C", "data-Molecule-Name": "Pentane-2,3-dione", "data-Responsive": 0, "data-img": null, "data-ID": 48305, "mols2grid-id": 292, "data-mols2grid-id-display": 292, "cellstyle": ""}, {"data-SMILES": "CCCC1CCCC(=O)O1", "data-Molecule-Name": "6-Propyloxan-2-one", "data-Responsive": 0, "data-img": null, "data-ID": 12392, "mols2grid-id": 284, "data-mols2grid-id-display": 284, "cellstyle": ""}, {"data-SMILES": "CC1C(=O)C(=C(O1)C)OC", "data-Molecule-Name": "4-Methoxy-2,5-dimethyl-3(2H)-furanone", "data-Responsive": 0, "data-img": null, "data-ID": 31951, "mols2grid-id": 282, "data-mols2grid-id-display": 282, "cellstyle": ""}, {"data-SMILES": "C1=CC=C(C=C1)CCC(=O)O", "data-Molecule-Name": "3-Phenylpropanoic acid", "data-Responsive": 0, "data-img": null, "data-ID": 37186, "mols2grid-id": 281, "data-mols2grid-id-display": 281, "cellstyle": ""}, {"data-SMILES": "C1=CC=C(C=C1)CC(=O)O", "data-Molecule-Name": "2-Phenylacetic acid", "data-Responsive": 0, "data-img": null, "data-ID": 35259, "mols2grid-id": 280, "data-mols2grid-id-display": 280, "cellstyle": ""}, {"data-SMILES": "C1=CC(=CC=C1/C=C/C(=O)O)O", "data-Molecule-Name": "(E)-3-(4-Hydroxyphenyl)prop-2-enoic acid", "data-Responsive": 0, "data-img": null, "data-ID": 25018, "mols2grid-id": 279, "data-mols2grid-id-display": 279, "cellstyle": ""}, {"data-SMILES": "CC(=O)O", "data-Molecule-Name": "Acetic acid", "data-Responsive": 0, "data-img": null, "data-ID": 31083, "mols2grid-id": 278, "data-mols2grid-id-display": 278, "cellstyle": ""}, {"data-SMILES": "CCCCC(CC)CCC(=O)O", "data-Molecule-Name": "4-Ethyloctanoic acid", "data-Responsive": 0, "data-img": null, "data-ID": 29617, "mols2grid-id": 277, "data-mols2grid-id-display": 277, "cellstyle": ""}, {"data-SMILES": "CCCCC1CCC(=O)O1", "data-Molecule-Name": "5-Butyloxolan-2-one", "data-Responsive": 0, "data-img": null, "data-ID": 17480, "mols2grid-id": 283, "data-mols2grid-id-display": 283, "cellstyle": ""}, {"data-SMILES": "CCCCC(C)CCC(=O)O", "data-Molecule-Name": "4-Methyloctanoic acid", "data-Responsive": 0, "data-img": null, "data-ID": 22219, "mols2grid-id": 276, "data-mols2grid-id-display": 276, "cellstyle": ""}, {"data-SMILES": "CCCC(=O)C(C)CC", "data-Molecule-Name": "3-Methylheptan-4-one", "data-Responsive": 0, "data-img": null, "data-ID": 25023, "mols2grid-id": 293, "data-mols2grid-id-display": 293, "cellstyle": ""}, {"data-SMILES": "CC1=CC=C(C=C1)C(=O)C", "data-Molecule-Name": "1-(4-Methylphenyl)ethanone", "data-Responsive": 0, "data-img": null, "data-ID": 12941, "mols2grid-id": 296, "data-mols2grid-id-display": 296, "cellstyle": ""}, {"data-SMILES": "C1CCCCOC(=O)CCCCC/C=C\\CCC1", "data-Molecule-Name": "Ambrettolide", "data-Responsive": 0, "data-img": null, "data-ID": 27084, "mols2grid-id": 318, "data-mols2grid-id-display": 318, "cellstyle": ""}, {"data-SMILES": "CC1C/C=C/CCCCCCCCCC(=O)C1", "data-Molecule-Name": "(5E)-3-methylcyclopentadec-5-en-1-one", "data-Responsive": 0, "data-img": null, "data-ID": 25339, "mols2grid-id": 317, "data-mols2grid-id-display": 317, "cellstyle": ""}, {"data-SMILES": "C1CCC/C=C\\CCCCCCC(=O)CCC1", "data-Molecule-Name": "(e)-8-Cyclohexadecen-1-one", "data-Responsive": 0, "data-img": null, "data-ID": 40279, "mols2grid-id": 316, "data-mols2grid-id-display": 316, "cellstyle": ""}, {"data-SMILES": "CC(C(=O)C)C(=O)C", "data-Molecule-Name": "3-Methyl-2,4-pentanedione", "data-Responsive": 0, "data-img": null, "data-ID": 1174, "mols2grid-id": 312, "data-mols2grid-id-display": 312, "cellstyle": ""}, {"data-SMILES": "CCCCC(=O)C(=O)C", "data-Molecule-Name": "2,3-Heptanedione", "data-Responsive": 0, "data-img": null, "data-ID": 11477, "mols2grid-id": 311, "data-mols2grid-id-display": 311, "cellstyle": ""}, {"data-SMILES": "CCC(=O)C1=NCCC1", "data-Molecule-Name": "1-(3,4-Dihydro-2H-pyrrol-5-yl)propan-1-one", "data-Responsive": 0, "data-img": null, "data-ID": 28656, "mols2grid-id": 307, "data-mols2grid-id-display": 307, "cellstyle": ""}, {"data-SMILES": "CC(C(=O)C)O", "data-Molecule-Name": "(3R/3S)-3-Hydroxybutan-2-one", "data-Responsive": 0, "data-img": null, "data-ID": 31489, "mols2grid-id": 295, "data-mols2grid-id-display": 295, "cellstyle": ""}, {"data-SMILES": "CC(=O)C1=NCCS1", "data-Molecule-Name": "1-(4,5-Dihydro-1,3-thiazol-2-yl)ethanone", "data-Responsive": 0, "data-img": null, "data-ID": 12841, "mols2grid-id": 306, "data-mols2grid-id-display": 306, "cellstyle": ""}, {"data-SMILES": "CC1=CNC2=CC=CC=C12", "data-Molecule-Name": "Skatole", "data-Responsive": 0, "data-img": null, "data-ID": 39960, "mols2grid-id": 304, "data-mols2grid-id-display": 304, "cellstyle": ""}, {"data-SMILES": "CC1=CC=C(C=C1)C(=C)C", "data-Molecule-Name": "1-Methyl-4-(prop-1-en-2-yl)benzene", "data-Responsive": 0, "data-img": null, "data-ID": 24509, "mols2grid-id": 303, "data-mols2grid-id-display": 303, "cellstyle": ""}, {"data-SMILES": "COC1=CC2=C(C=C1)C=CC(=O)O2", "data-Molecule-Name": "7-Methoxychromen-2-one", "data-Responsive": 0, "data-img": null, "data-ID": 23116, "mols2grid-id": 302, "data-mols2grid-id-display": 302, "cellstyle": ""}, {"data-SMILES": "CC1=C(C(=O)C=CO1)O", "data-Molecule-Name": "maltol", "data-Responsive": 0, "data-img": null, "data-ID": 37598, "mols2grid-id": 301, "data-mols2grid-id-display": 301, "cellstyle": ""}, {"data-SMILES": "CCC(C)C(=O)/C=C/C", "data-Molecule-Name": "5-methylhept-2-en-4-one", "data-Responsive": 0, "data-img": null, "data-ID": 6971, "mols2grid-id": 298, "data-mols2grid-id-display": 298, "cellstyle": ""}, {"data-SMILES": "CC(=O)C1=CC=CC=C1N", "data-Molecule-Name": "1-(2-Aminophenyl)ethanone", "data-Responsive": 0, "data-img": null, "data-ID": 12975, "mols2grid-id": 297, "data-mols2grid-id-display": 297, "cellstyle": ""}, {"data-SMILES": "CCOC(C)OCC", "data-Molecule-Name": "1,1-Diethoxyethane", "data-Responsive": 0, "data-img": null, "data-ID": 9331, "mols2grid-id": 305, "data-mols2grid-id-display": 305, "cellstyle": ""}, {"data-SMILES": "C1=CC=C(C=C1)/C=C/CO", "data-Molecule-Name": "3-Phenyl-2-propen-1-ol", "data-Responsive": 0, "data-img": null, "data-ID": 28146, "mols2grid-id": 275, "data-mols2grid-id-display": 275, "cellstyle": ""}, {"data-SMILES": "C1=CC=C(C=C1)CCO", "data-Molecule-Name": "2-Phenylethanol", "data-Responsive": 0, "data-img": null, "data-ID": 35313, "mols2grid-id": 274, "data-mols2grid-id-display": 274, "cellstyle": ""}, {"data-SMILES": "CC/C=C\\CC/C=C/CO", "data-Molecule-Name": "(2E,6Z)-Nona-2,6-dien-1-ol", "data-Responsive": 0, "data-img": null, "data-ID": 6955, "mols2grid-id": 273, "data-mols2grid-id-display": 273, "cellstyle": ""}, {"data-SMILES": "CCCCC(=O)OCC", "data-Molecule-Name": "Ethyl pentanoate", "data-Responsive": 0, "data-img": null, "data-ID": 16415, "mols2grid-id": 249, "data-mols2grid-id-display": 249, "cellstyle": ""}, {"data-SMILES": "CCCC(=O)OCC", "data-Molecule-Name": "Ethyl butanoate", "data-Responsive": 0, "data-img": null, "data-ID": 27207, "mols2grid-id": 248, "data-mols2grid-id-display": 248, "cellstyle": ""}, {"data-SMILES": "COC(=O)/C=C/C1=CC=CC=C1", "data-Molecule-Name": "Methyl (E)-3-phenylprop-2-enoate", "data-Responsive": 0, "data-img": null, "data-ID": 8217, "mols2grid-id": 247, "data-mols2grid-id-display": 247, "cellstyle": ""}, {"data-SMILES": "CCCC(=O)OC", "data-Molecule-Name": "Methyl butanoate", "data-Responsive": 0, "data-img": null, "data-ID": 34738, "mols2grid-id": 246, "data-mols2grid-id-display": 246, "cellstyle": ""}, {"data-SMILES": "CC(C)C1=CC=C(C=C1)C=O", "data-Molecule-Name": "cuminaldehyde", "data-Responsive": 0, "data-img": null, "data-ID": 35830, "mols2grid-id": 245, "data-mols2grid-id-display": 245, "cellstyle": ""}, {"data-SMILES": "CCOC1=C(C=CC(=C1)C=O)O", "data-Molecule-Name": "Ethylvanillin", "data-Responsive": 0, "data-img": null, "data-ID": 7825, "mols2grid-id": 243, "data-mols2grid-id-display": 243, "cellstyle": ""}, {"data-SMILES": "CCCCCCCC(=O)OCC", "data-Molecule-Name": "Ethyl octanoate", "data-Responsive": 0, "data-img": null, "data-ID": 38876, "mols2grid-id": 251, "data-mols2grid-id-display": 251, "cellstyle": ""}, {"data-SMILES": "COC1=C(C=CC(=C1)CC=C)O", "data-Molecule-Name": "eugenol", "data-Responsive": 0, "data-img": null, "data-ID": 31508, "mols2grid-id": 242, "data-mols2grid-id-display": 242, "cellstyle": ""}, {"data-SMILES": "CCCCCCCC/C=C/C=O", "data-Molecule-Name": "(E)-2-Undecenal", "data-Responsive": 0, "data-img": null, "data-ID": 28668, "mols2grid-id": 240, "data-mols2grid-id-display": 240, "cellstyle": ""}, {"data-SMILES": "CC(C)CCCCCCCCCCC=O", "data-Molecule-Name": "12-Methyltridecanal", "data-Responsive": 0, "data-img": null, "data-ID": 28151, "mols2grid-id": 239, "data-mols2grid-id-display": 239, "cellstyle": ""}, {"data-SMILES": "CCCC/C=C\\C=C\\C=O", "data-Molecule-Name": "(E,Z)-2,4-Nonadienal", "data-Responsive": 0, "data-img": null, "data-ID": 40376, "mols2grid-id": 238, "data-mols2grid-id-display": 238, "cellstyle": ""}, {"data-SMILES": "CCCCCC/C=C\\C=O", "data-Molecule-Name": "(Z)-2-Nonenal", "data-Responsive": 0, "data-img": null, "data-ID": 7461, "mols2grid-id": 237, "data-mols2grid-id-display": 237, "cellstyle": ""}, {"data-SMILES": "CCCCC/C=C\\C=O", "data-Molecule-Name": "(Z)-2-Octenal", "data-Responsive": 0, "data-img": null, "data-ID": 24021, "mols2grid-id": 236, "data-mols2grid-id-display": 236, "cellstyle": ""}, {"data-SMILES": "CC/C=C\\CCC=O", "data-Molecule-Name": "(Z)-4-Heptenal", "data-Responsive": 0, "data-img": null, "data-ID": 34779, "mols2grid-id": 235, "data-mols2grid-id-display": 235, "cellstyle": ""}, {"data-SMILES": "CC=O", "data-Molecule-Name": "Ethanal", "data-Responsive": 0, "data-img": null, "data-ID": 16863, "mols2grid-id": 241, "data-mols2grid-id-display": 241, "cellstyle": ""}, {"data-SMILES": "CCCCCCCCCC(=O)OCC", "data-Molecule-Name": "Ethyl caprate", "data-Responsive": 0, "data-img": null, "data-ID": 31112, "mols2grid-id": 252, "data-mols2grid-id-display": 252, "cellstyle": ""}, {"data-SMILES": "CCOC(=O)C1=CC=CC=C1", "data-Molecule-Name": "Ethyl benzoate", "data-Responsive": 0, "data-img": null, "data-ID": 24535, "mols2grid-id": 253, "data-mols2grid-id-display": 253, "cellstyle": ""}, {"data-SMILES": "CCOC(=O)/C=C/C1=CC=CC=C1", "data-Molecule-Name": "Ethyl (E)-3-phenylprop-2-enoate", "data-Responsive": 0, "data-img": null, "data-ID": 19121, "mols2grid-id": 255, "data-mols2grid-id-display": 255, "cellstyle": ""}, {"data-SMILES": "CC(C)CCO", "data-Molecule-Name": "3-Methylbutan-1-ol", "data-Responsive": 0, "data-img": null, "data-ID": 29566, "mols2grid-id": 272, "data-mols2grid-id-display": 272, "cellstyle": ""}, {"data-SMILES": "CCC(C)CO", "data-Molecule-Name": "2-Methylbutan-1-ol", "data-Responsive": 0, "data-img": null, "data-ID": 30609, "mols2grid-id": 271, "data-mols2grid-id-display": 271, "cellstyle": ""}, {"data-SMILES": "CC(C)CO", "data-Molecule-Name": "2-Methylpropan-1-ol", "data-Responsive": 0, "data-img": null, "data-ID": 41236, "mols2grid-id": 270, "data-mols2grid-id-display": 270, "cellstyle": ""}, {"data-SMILES": "CCCCCC(C)O", "data-Molecule-Name": "Heptan-2-ol", "data-Responsive": 0, "data-img": null, "data-ID": 8666, "mols2grid-id": 269, "data-mols2grid-id-display": 269, "cellstyle": ""}, {"data-SMILES": "CCO", "data-Molecule-Name": "Ethanol", "data-Responsive": 0, "data-img": null, "data-ID": 22224, "mols2grid-id": 268, "data-mols2grid-id-display": 268, "cellstyle": ""}, {"data-SMILES": "CC(=O)OC/C=C/C1=CC=CC=C1", "data-Molecule-Name": "[(E)-3-Phenylprop-2-enyl] acetate", "data-Responsive": 0, "data-img": null, "data-ID": 35233, "mols2grid-id": 267, "data-mols2grid-id-display": 267, "cellstyle": ""}, {"data-SMILES": "CC/C=C\\CCOC(=O)C", "data-Molecule-Name": "[(Z)-Hex-3-enyl] acetate", "data-Responsive": 0, "data-img": null, "data-ID": 26318, "mols2grid-id": 266, "data-mols2grid-id-display": 266, "cellstyle": ""}, {"data-SMILES": "CCOC(=O)C", "data-Molecule-Name": "Ethyl acetate", "data-Responsive": 0, "data-img": null, "data-ID": 37150, "mols2grid-id": 263, "data-mols2grid-id-display": 263, "cellstyle": ""}, {"data-SMILES": "CCC(C)COC(=O)C", "data-Molecule-Name": "2-Methylbutyl acetate", "data-Responsive": 0, "data-img": null, "data-ID": 37154, "mols2grid-id": 262, "data-mols2grid-id-display": 262, "cellstyle": ""}, {"data-SMILES": "CC(C)C(=O)OC", "data-Molecule-Name": "Methyl 2-methylpropanoate", "data-Responsive": 0, "data-img": null, "data-ID": 7011, "mols2grid-id": 261, "data-mols2grid-id-display": 261, "cellstyle": ""}, {"data-SMILES": "CCC(C)C(=O)OC", "data-Molecule-Name": "Methyl 2-methylbutanoate", "data-Responsive": 0, "data-img": null, "data-ID": 27212, "mols2grid-id": 260, "data-mols2grid-id-display": 260, "cellstyle": ""}, {"data-SMILES": "CCC[C@H](CC(=O)OCC)O", "data-Molecule-Name": "Ethyl (3R) 3-hydroxyhexanoate", "data-Responsive": 0, "data-img": null, "data-ID": 24030, "mols2grid-id": 259, "data-mols2grid-id-display": 259, "cellstyle": ""}, {"data-SMILES": "CCOC(=O)CCC(C)C", "data-Molecule-Name": "Ethyl 4-methylpentanoate", "data-Responsive": 0, "data-img": null, "data-ID": 27605, "mols2grid-id": 258, "data-mols2grid-id-display": 258, "cellstyle": ""}, {"data-SMILES": "CCOC(=O)CC(C)C", "data-Molecule-Name": "Ethyl 3-methylbutanoate", "data-Responsive": 0, "data-img": null, "data-ID": 29593, "mols2grid-id": 257, "data-mols2grid-id-display": 257, "cellstyle": ""}, {"data-SMILES": "CCC(C)C(=O)OCC", "data-Molecule-Name": "Ethyl 2-methylbutanoate", "data-Responsive": 0, "data-img": null, "data-ID": 14453, "mols2grid-id": 256, "data-mols2grid-id-display": 256, "cellstyle": ""}, {"data-SMILES": "CC/C=C\\CC=O", "data-Molecule-Name": "(Z)-3-Hexenal", "data-Responsive": 0, "data-img": null, "data-ID": 14002, "mols2grid-id": 233, "data-mols2grid-id-display": 233, "cellstyle": ""}, {"data-SMILES": "C[C@]12CC[C@H](C1)C(C2=O)(C)C", "data-Molecule-Name": "(+)-Fenchone", "data-Responsive": 0, "data-img": null, "data-ID": 2323, "mols2grid-id": 146, "data-mols2grid-id-display": 146, "cellstyle": ""}, {"data-SMILES": "C=CCC1=CC=CC=C1", "data-Molecule-Name": "Allyl benzene", "data-Responsive": 0, "data-img": null, "data-ID": 1420, "mols2grid-id": 161, "data-mols2grid-id-display": 161, "cellstyle": ""}, {"data-SMILES": "C[C@@]12CC[C@@H](C1(C)C)CC2=O", "data-Molecule-Name": "(+)-Camphor", "data-Responsive": 0, "data-img": null, "data-ID": 719, "mols2grid-id": 144, "data-mols2grid-id-display": 144, "cellstyle": ""}, {"data-SMILES": "CC(C)CCC(=O)O", "data-Molecule-Name": "4-methylvaleric acid", "data-Responsive": 0, "data-img": null, "data-ID": 11365, "mols2grid-id": 48, "data-mols2grid-id-display": 48, "cellstyle": ""}, {"data-SMILES": "C[C@]12CC[C@H]3[C@H]([C@@H]1CC=C2)CC[C@@H]4[C@@]3(CCC(=O)C4)C", "data-Molecule-Name": "androstenone", "data-Responsive": 0, "data-img": null, "data-ID": 44655, "mols2grid-id": 49, "data-mols2grid-id-display": 49, "cellstyle": ""}, {"data-SMILES": "CCCCOC(=O)C", "data-Molecule-Name": "butyl acetate", "data-Responsive": 0, "data-img": null, "data-ID": 43615, "mols2grid-id": 50, "data-mols2grid-id-display": 50, "cellstyle": ""}, {"data-SMILES": "CCCC(=O)O", "data-Molecule-Name": "butyric acid", "data-Responsive": 0, "data-img": null, "data-ID": 43812, "mols2grid-id": 51, "data-mols2grid-id-display": 51, "cellstyle": ""}, {"data-SMILES": "CCCCCC(=O)O", "data-Molecule-Name": "caproic acid", "data-Responsive": 0, "data-img": null, "data-ID": 927, "mols2grid-id": 52, "data-mols2grid-id-display": 52, "cellstyle": ""}, {"data-SMILES": "CC1(C2CCC(O1)(CC2)C)C", "data-Molecule-Name": "cineole", "data-Responsive": 0, "data-img": null, "data-ID": 48938, "mols2grid-id": 53, "data-mols2grid-id-display": 53, "cellstyle": ""}, {"data-SMILES": "C=CCSCC=C", "data-Molecule-Name": "diallyl sulfide", "data-Responsive": 0, "data-img": null, "data-ID": 32369, "mols2grid-id": 56, "data-mols2grid-id-display": 56, "cellstyle": ""}, {"data-SMILES": "C1CCCCCC(=O)OCCOC(=O)CCCCC1", "data-Molecule-Name": "ethylene brassylate", "data-Responsive": 0, "data-img": null, "data-ID": 49478, "mols2grid-id": 57, "data-mols2grid-id-display": 57, "cellstyle": ""}, {"data-SMILES": "COC1=C(C=C(C=C1)CC=C)OC", "data-Molecule-Name": "eugenol methyl ether", "data-Responsive": 0, "data-img": null, "data-ID": 50132, "mols2grid-id": 58, "data-mols2grid-id-display": 58, "cellstyle": ""}, {"data-SMILES": "C[C@@]12CC[C@@H](C1)C(C2=O)(C)C", "data-Molecule-Name": "(-)-Fenchone", "data-Responsive": 0, "data-img": null, "data-ID": 2261, "mols2grid-id": 59, "data-mols2grid-id-display": 59, "cellstyle": ""}, {"data-SMILES": "C[C@]12CC[C@H]3[C@H]([C@@H]1CC=C2)CCC4=CC(=O)CC[C@]34C", "data-Molecule-Name": "androstadienone", "data-Responsive": 0, "data-img": null, "data-ID": 15675, "mols2grid-id": 60, "data-mols2grid-id-display": 60, "cellstyle": ""}, {"data-SMILES": "COC1=CC=CC=C1O", "data-Molecule-Name": "guaiacol", "data-Responsive": 0, "data-img": null, "data-ID": 45843, "mols2grid-id": 61, "data-mols2grid-id-display": 61, "cellstyle": ""}, {"data-SMILES": "CCCCCCCOC(=O)C", "data-Molecule-Name": "heptyl acetate", "data-Responsive": 0, "data-img": null, "data-ID": 39833, "mols2grid-id": 62, "data-mols2grid-id-display": 62, "cellstyle": ""}, {"data-SMILES": "CCCCCCOC(=O)CCC", "data-Molecule-Name": "hexyl butyrate", "data-Responsive": 0, "data-img": null, "data-ID": 37029, "mols2grid-id": 63, "data-mols2grid-id-display": 63, "cellstyle": ""}, {"data-SMILES": "CC(=O)O[C@H]1C[C@H]2CC[C@]1(C2(C)C)C", "data-Molecule-Name": "isobornyl acetate", "data-Responsive": 0, "data-img": null, "data-ID": 19495, "mols2grid-id": 64, "data-mols2grid-id-display": 64, "cellstyle": ""}, {"data-SMILES": "CC(C)C(=O)O", "data-Molecule-Name": "isobutyric acid", "data-Responsive": 0, "data-img": null, "data-ID": 45523, "mols2grid-id": 65, "data-mols2grid-id-display": 65, "cellstyle": ""}, {"data-SMILES": "CC(C)CC(=O)O", "data-Molecule-Name": "isovaleric acid", "data-Responsive": 0, "data-img": null, "data-ID": 44310, "mols2grid-id": 66, "data-mols2grid-id-display": 66, "cellstyle": ""}, {"data-SMILES": "CC(=CCC/C(=C/COC(=O)C)/C)C", "data-Molecule-Name": "geranyl acetate", "data-Responsive": 0, "data-img": null, "data-ID": 44765, "mols2grid-id": 82, "data-mols2grid-id-display": 82, "cellstyle": ""}, {"data-SMILES": "CC(=O)OC1=C(C=C(C=C1)CC=C)OC", "data-Molecule-Name": "eugenol acetate", "data-Responsive": 0, "data-img": null, "data-ID": 47985, "mols2grid-id": 81, "data-mols2grid-id-display": 81, "cellstyle": ""}, {"data-SMILES": "C[C@H]1CC[C@@H]([C@H](C1)O)C(C)C", "data-Molecule-Name": "(+)-menthol", "data-Responsive": 0, "data-img": null, "data-ID": 46382, "mols2grid-id": 79, "data-mols2grid-id-display": 79, "cellstyle": ""}, {"data-SMILES": "CC(=O)CCC1=CC=C(C=C1)O", "data-Molecule-Name": "Raspberry ketone", "data-Responsive": 0, "data-img": null, "data-ID": 25026, "mols2grid-id": 78, "data-mols2grid-id-display": 78, "cellstyle": ""}, {"data-SMILES": "C(CC(=O)O)C(=O)O", "data-Molecule-Name": "Succinic acid", "data-Responsive": 0, "data-img": null, "data-ID": 19147, "mols2grid-id": 77, "data-mols2grid-id-display": 77, "cellstyle": ""}, {"data-SMILES": "C(CCC(=O)O)CC(=O)O", "data-Molecule-Name": "adipic acid", "data-Responsive": 0, "data-img": null, "data-ID": 35272, "mols2grid-id": 76, "data-mols2grid-id-display": 76, "cellstyle": ""}, {"data-SMILES": "CC1=CC(=C(C=C1)O)OC", "data-Molecule-Name": "2-methoxy-4-methylphenol", "data-Responsive": 0, "data-img": null, "data-ID": 47017, "mols2grid-id": 47, "data-mols2grid-id-display": 47, "cellstyle": ""}, {"data-SMILES": "CC1=C(C=C(C=C1)[N+](=O)[O-])[N+](=O)[O-]", "data-Molecule-Name": "2,4-DNT", "data-Responsive": 0, "data-img": null, "data-ID": 31402, "mols2grid-id": 75, "data-mols2grid-id-display": 75, "cellstyle": ""}, {"data-SMILES": "COC1=C(C=CC(=C1)C=O)O", "data-Molecule-Name": "vanillin", "data-Responsive": 0, "data-img": null, "data-ID": 46173, "mols2grid-id": 73, "data-mols2grid-id-display": 73, "cellstyle": ""}, {"data-SMILES": "CCCCCCCCCCC=O", "data-Molecule-Name": "undecanal", "data-Responsive": 0, "data-img": null, "data-ID": 20415, "mols2grid-id": 72, "data-mols2grid-id-display": 72, "cellstyle": ""}, {"data-SMILES": "C1=CN=CC=N1", "data-Molecule-Name": "pyrazine", "data-Responsive": 0, "data-img": null, "data-ID": 22101, "mols2grid-id": 71, "data-mols2grid-id-display": 71, "cellstyle": ""}, {"data-SMILES": "C1CCCCCCCOC(=O)CCCCCC1", "data-Molecule-Name": "pentadecalactone", "data-Responsive": 0, "data-img": null, "data-ID": 11821, "mols2grid-id": 69, "data-mols2grid-id-display": 69, "cellstyle": ""}, {"data-SMILES": "COC(=O)C1=CC=CC=C1O", "data-Molecule-Name": "methyl salicylate", "data-Responsive": 0, "data-img": null, "data-ID": 46951, "mols2grid-id": 68, "data-mols2grid-id-display": 68, "cellstyle": ""}, {"data-SMILES": "CS", "data-Molecule-Name": "methanethiol", "data-Responsive": 0, "data-img": null, "data-ID": 23911, "mols2grid-id": 67, "data-mols2grid-id-display": 67, "cellstyle": ""}, {"data-SMILES": "COC(=O)C1=CC=CC=C1", "data-Molecule-Name": "methyl benzoate", "data-Responsive": 0, "data-img": null, "data-ID": 47372, "mols2grid-id": 74, "data-mols2grid-id-display": 74, "cellstyle": ""}, {"data-SMILES": "CCC1(C(C2CCC1(C2)C)(C)C)O", "data-Molecule-Name": "2-ethylfenchol", "data-Responsive": 0, "data-img": null, "data-ID": 19949, "mols2grid-id": 46, "data-mols2grid-id-display": 46, "cellstyle": ""}, {"data-SMILES": "CCCCCCC/C=C/C=O", "data-Molecule-Name": "2-decenal", "data-Responsive": 0, "data-img": null, "data-ID": 46071, "mols2grid-id": 45, "data-mols2grid-id-display": 45, "cellstyle": ""}, {"data-SMILES": "CCC(=O)C", "data-Molecule-Name": "2-butanone", "data-Responsive": 0, "data-img": null, "data-ID": 41113, "mols2grid-id": 44, "data-mols2grid-id-display": 44, "cellstyle": ""}, {"data-SMILES": "CCC1=NC=CN=C1CC", "data-Molecule-Name": "2,3-diethylpyrazine", "data-Responsive": 0, "data-img": null, "data-ID": 14032, "mols2grid-id": 16, "data-mols2grid-id-display": 16, "cellstyle": ""}, {"data-SMILES": "CCC(C)C1=NC=CN=C1OC", "data-Molecule-Name": "3-sec-butyl-2-methoxypyrazine", "data-Responsive": 0, "data-img": null, "data-ID": 47318, "mols2grid-id": 15, "data-mols2grid-id-display": 15, "cellstyle": ""}, {"data-SMILES": "CC1=CN=C(C(=N1)C)C", "data-Molecule-Name": "trimethylpyrazine", "data-Responsive": 0, "data-img": null, "data-ID": 45080, "mols2grid-id": 14, "data-mols2grid-id-display": 14, "cellstyle": ""}, {"data-SMILES": "CCC1=NC=CN=C1", "data-Molecule-Name": "2-ethylpyrazine", "data-Responsive": 0, "data-img": null, "data-ID": 21407, "mols2grid-id": 13, "data-mols2grid-id-display": 13, "cellstyle": ""}, {"data-SMILES": "CC1=NC=CN=C1", "data-Molecule-Name": "2-methylpyrazine", "data-Responsive": 0, "data-img": null, "data-ID": 7814, "mols2grid-id": 12, "data-mols2grid-id-display": 12, "cellstyle": ""}, {"data-SMILES": "CN(C)C", "data-Molecule-Name": "trimethylamine", "data-Responsive": 0, "data-img": null, "data-ID": 12856, "mols2grid-id": 11, "data-mols2grid-id-display": 11, "cellstyle": ""}, {"data-SMILES": "CCCCCCCCC=O", "data-Molecule-Name": "nonanal", "data-Responsive": 0, "data-img": null, "data-ID": 1251, "mols2grid-id": 18, "data-mols2grid-id-display": 18, "cellstyle": ""}, {"data-SMILES": "CC(C)C=O", "data-Molecule-Name": "isobutyraldehyde", "data-Responsive": 0, "data-img": null, "data-ID": 41825, "mols2grid-id": 10, "data-mols2grid-id-display": 10, "cellstyle": ""}, {"data-SMILES": "CC1C(=O)C(=C(O1)C)O", "data-Molecule-Name": "furaneol", "data-Responsive": 0, "data-img": null, "data-ID": 45113, "mols2grid-id": 8, "data-mols2grid-id-display": 8, "cellstyle": ""}, {"data-SMILES": "CCC1=NC=C(N=C1CC)C", "data-Molecule-Name": "2,3-diethyl-5-methylpyrazine", "data-Responsive": 0, "data-img": null, "data-ID": 47185, "mols2grid-id": 7, "data-mols2grid-id-display": 7, "cellstyle": ""}, {"data-SMILES": "CCC(=O)C=C", "data-Molecule-Name": "1-penten-3-one", "data-Responsive": 0, "data-img": null, "data-ID": 45249, "mols2grid-id": 6, "data-mols2grid-id-display": 6, "cellstyle": ""}, {"data-SMILES": "CC(=O)C(=O)C", "data-Molecule-Name": "diacetyl", "data-Responsive": 0, "data-img": null, "data-ID": 47457, "mols2grid-id": 3, "data-mols2grid-id-display": 3, "cellstyle": ""}, {"data-SMILES": "CCCCCC/C=C/C=O", "data-Molecule-Name": "trans-2-Nonenal", "data-Responsive": 0, "data-img": null, "data-ID": 42723, "mols2grid-id": 2, "data-mols2grid-id-display": 2, "cellstyle": ""}, {"data-SMILES": "CC(C)C1=NC=CN=C1OC", "data-Molecule-Name": "2-isopropyl-3-methoxypyrazine", "data-Responsive": 0, "data-img": null, "data-ID": 46469, "mols2grid-id": 1, "data-mols2grid-id-display": 1, "cellstyle": ""}, {"data-SMILES": "CSCCC=O", "data-Molecule-Name": "Methional", "data-Responsive": 0, "data-img": null, "data-ID": 43350, "mols2grid-id": 9, "data-mols2grid-id-display": 9, "cellstyle": ""}, {"data-SMILES": "CCCCS", "data-Molecule-Name": "butanethiol", "data-Responsive": 0, "data-img": null, "data-ID": 35297, "mols2grid-id": 87, "data-mols2grid-id-display": 87, "cellstyle": ""}, {"data-SMILES": "CCCCCCCCCC=O", "data-Molecule-Name": "decanal", "data-Responsive": 0, "data-img": null, "data-ID": 1966, "mols2grid-id": 19, "data-mols2grid-id-display": 19, "cellstyle": ""}, {"data-SMILES": "CC(=CCC/C(=C/CC/C(=C/CO)/C)/C)C", "data-Molecule-Name": "farnesol", "data-Responsive": 0, "data-img": null, "data-ID": 9294, "mols2grid-id": 22, "data-mols2grid-id-display": 22, "cellstyle": ""}, {"data-SMILES": "CCCCO", "data-Molecule-Name": "1-butanol", "data-Responsive": 0, "data-img": null, "data-ID": 45952, "mols2grid-id": 43, "data-mols2grid-id-display": 43, "cellstyle": ""}, {"data-SMILES": "CC1C(=NC(S1)C)C", "data-Molecule-Name": "2,4,5-trimethyl-2,5-dihydro-1,3-thiazole", "data-Responsive": 0, "data-img": null, "data-ID": 6014, "mols2grid-id": 41, "data-mols2grid-id-display": 41, "cellstyle": ""}, {"data-SMILES": "CC(=O)C1=CC=CC=C1", "data-Molecule-Name": "acetophenone", "data-Responsive": 0, "data-img": null, "data-ID": 2112, "mols2grid-id": 40, "data-mols2grid-id-display": 40, "cellstyle": ""}, {"data-SMILES": "C1CCC(=O)CC1", "data-Molecule-Name": "Cyclohexanone", "data-Responsive": 0, "data-img": null, "data-ID": 1754, "mols2grid-id": 39, "data-mols2grid-id-display": 39, "cellstyle": ""}, {"data-SMILES": "CCCCCOC(=O)C", "data-Molecule-Name": "n-amyl acetate", "data-Responsive": 0, "data-img": null, "data-ID": 47095, "mols2grid-id": 38, "data-mols2grid-id-display": 38, "cellstyle": ""}, {"data-SMILES": "CC(=CCC/C(=C/C#N)/C)C", "data-Molecule-Name": "Citralva", "data-Responsive": 0, "data-img": null, "data-ID": 1440, "mols2grid-id": 37, "data-mols2grid-id-display": 37, "cellstyle": ""}, {"data-SMILES": "CC(C)(C)C1=CC=C(C=C1)CCC=O", "data-Molecule-Name": "bourgeonal", "data-Responsive": 0, "data-img": null, "data-ID": 44029, "mols2grid-id": 20, "data-mols2grid-id-display": 20, "cellstyle": ""}, {"data-SMILES": "C(=CCl)Cl", "data-Molecule-Name": "1,2-Dichloroethylene", "data-Responsive": 0, "data-img": null, "data-ID": 19149, "mols2grid-id": 33, "data-mols2grid-id-display": 33, "cellstyle": ""}, {"data-SMILES": "CCCCCCCC(=O)O", "data-Molecule-Name": "Octanoic acid", "data-Responsive": 0, "data-img": null, "data-ID": 4852, "mols2grid-id": 30, "data-mols2grid-id-display": 30, "cellstyle": ""}, {"data-SMILES": "CCCCCCCCC(=O)O", "data-Molecule-Name": "Nonanoic acid", "data-Responsive": 0, "data-img": null, "data-ID": 803, "mols2grid-id": 29, "data-mols2grid-id-display": 29, "cellstyle": ""}, {"data-SMILES": "CC1=CC[C@H](CC1OC(=O)C)C(=C)C", "data-Molecule-Name": "(-)carvyl acetate", "data-Responsive": 0, "data-img": null, "data-ID": 38859, "mols2grid-id": 28, "data-mols2grid-id-display": 28, "cellstyle": ""}, {"data-SMILES": "CCCCCCCCCO", "data-Molecule-Name": "nonanol", "data-Responsive": 0, "data-img": null, "data-ID": 5590, "mols2grid-id": 27, "data-mols2grid-id-display": 27, "cellstyle": ""}, {"data-SMILES": "CC1=NC=CN=C1C", "data-Molecule-Name": "2,3-dimethylpyrazine", "data-Responsive": 0, "data-img": null, "data-ID": 28663, "mols2grid-id": 25, "data-mols2grid-id-display": 25, "cellstyle": ""}, {"data-SMILES": "CC(CCC=C(C)C)CC(=O)O", "data-Molecule-Name": "3,7-dimethyl-6-octenoic acid", "data-Responsive": 0, "data-img": null, "data-ID": 44076, "mols2grid-id": 23, "data-mols2grid-id-display": 23, "cellstyle": ""}, {"data-SMILES": "CSCCCO", "data-Molecule-Name": "methionol", "data-Responsive": 0, "data-img": null, "data-ID": 43555, "mols2grid-id": 32, "data-mols2grid-id-display": 32, "cellstyle": ""}, {"data-SMILES": "CCCCCCO", "data-Molecule-Name": "hexanol", "data-Responsive": 0, "data-img": null, "data-ID": 5464, "mols2grid-id": 88, "data-mols2grid-id-display": 88, "cellstyle": ""}, {"data-SMILES": "C1=CC=C(C=C1)CC=O", "data-Molecule-Name": "phenyl acetaldehyde", "data-Responsive": 0, "data-img": null, "data-ID": 43691, "mols2grid-id": 70, "data-mols2grid-id-display": 70, "cellstyle": ""}, {"data-SMILES": "CCCCCO", "data-Molecule-Name": "pentanol", "data-Responsive": 0, "data-img": null, "data-ID": 134, "mols2grid-id": 90, "data-mols2grid-id-display": 90, "cellstyle": ""}, {"data-SMILES": "CC(C)CCOC(=O)C", "data-Molecule-Name": "Isoamyl acetate", "data-Responsive": 0, "data-img": null, "data-ID": 46066, "mols2grid-id": 109, "data-mols2grid-id-display": 109, "cellstyle": ""}, {"data-SMILES": "C1CCNC1", "data-Molecule-Name": "pyrrolidine", "data-Responsive": 0, "data-img": null, "data-ID": 31537, "mols2grid-id": 111, "data-mols2grid-id-display": 111, "cellstyle": ""}, {"data-SMILES": "CCC(C(=O)O)Br", "data-Molecule-Name": "Bromobutyric acid", "data-Responsive": 0, "data-img": null, "data-ID": 38394, "mols2grid-id": 114, "data-mols2grid-id-display": 114, "cellstyle": ""}, {"data-SMILES": "CCCCC(=O)O", "data-Molecule-Name": "Valeric acid", "data-Responsive": 0, "data-img": null, "data-ID": 2976, "mols2grid-id": 115, "data-mols2grid-id-display": 115, "cellstyle": ""}, {"data-SMILES": "CCC(C)C(=O)O", "data-Molecule-Name": "2-methyl-butyric acid", "data-Responsive": 0, "data-img": null, "data-ID": 49056, "mols2grid-id": 116, "data-mols2grid-id-display": 116, "cellstyle": ""}, {"data-SMILES": "C/C=C/C(=O)C1=C(C=CCC1(C)C)C", "data-Molecule-Name": "damascenone", "data-Responsive": 0, "data-img": null, "data-ID": 29574, "mols2grid-id": 117, "data-mols2grid-id-display": 117, "cellstyle": ""}, {"data-SMILES": "CC/C=C\\CC/C=C/C=O", "data-Molecule-Name": "E,Z-2,6-nonadienal", "data-Responsive": 0, "data-img": null, "data-ID": 45063, "mols2grid-id": 118, "data-mols2grid-id-display": 118, "cellstyle": ""}, {"data-SMILES": "CC1=CCCC(C1/C=C/C(=O)C)(C)C", "data-Molecule-Name": "(E)-alpha-Ionone", "data-Responsive": 0, "data-img": null, "data-ID": 34752, "mols2grid-id": 120, "data-mols2grid-id-display": 120, "cellstyle": ""}, {"data-SMILES": "CC/C=C\\CC/C=C\\C=O", "data-Molecule-Name": "E,E-2,6-nonadienal", "data-Responsive": 0, "data-img": null, "data-ID": 15805, "mols2grid-id": 121, "data-mols2grid-id-display": 121, "cellstyle": ""}, {"data-SMILES": "COC1=CC=CC=C1", "data-Molecule-Name": "anisole", "data-Responsive": 0, "data-img": null, "data-ID": 31097, "mols2grid-id": 107, "data-mols2grid-id-display": 107, "cellstyle": ""}, {"data-SMILES": "CC1C(SC(=N1)C)C", "data-Molecule-Name": "2,4,5-trimethyl-4,5-dihydrothiazole", "data-Responsive": 0, "data-img": null, "data-ID": 9143, "mols2grid-id": 123, "data-mols2grid-id-display": 123, "cellstyle": ""}, {"data-SMILES": "C/C=C/C(=O)C1=C(CCCC1(C)C)C", "data-Molecule-Name": "E-beta-damascone", "data-Responsive": 0, "data-img": null, "data-ID": 42131, "mols2grid-id": 124, "data-mols2grid-id-display": 124, "cellstyle": ""}, {"data-SMILES": "CC1([C@H]2CC=C([C@@H]1C2)C=O)C", "data-Molecule-Name": "(-)-Myrtenal", "data-Responsive": 0, "data-img": null, "data-ID": 20524, "mols2grid-id": 125, "data-mols2grid-id-display": 125, "cellstyle": ""}, {"data-SMILES": "CC1=C(C(CCC1)(C)C)/C=C/C(=O)C", "data-Molecule-Name": "(E)-beta-Ionone", "data-Responsive": 0, "data-img": null, "data-ID": 47233, "mols2grid-id": 127, "data-mols2grid-id-display": 127, "cellstyle": ""}, {"data-SMILES": "CCCCCC(C(C)CO)S", "data-Molecule-Name": "3-Mercapto-2-methyloctan-1-ol", "data-Responsive": 0, "data-img": null, "data-ID": 8127, "mols2grid-id": 135, "data-mols2grid-id-display": 135, "cellstyle": ""}, {"data-SMILES": "CC(=CCCC(=CCOC(=O)C)C)C", "data-Molecule-Name": "nerylacetate", "data-Responsive": 0, "data-img": null, "data-ID": 15336, "mols2grid-id": 128, "data-mols2grid-id-display": 128, "cellstyle": ""}, {"data-SMILES": "CCCCC(C(C)CO)S", "data-Molecule-Name": "2-Methyl-3-sulfanylheptan-1-ol", "data-Responsive": 0, "data-img": null, "data-ID": 27512, "mols2grid-id": 134, "data-mols2grid-id-display": 134, "cellstyle": ""}, {"data-SMILES": "CCCCCCC/C=C/C=C/C=O", "data-Molecule-Name": "E,E-2,4-dodecadienal", "data-Responsive": 0, "data-img": null, "data-ID": 30233, "mols2grid-id": 130, "data-mols2grid-id-display": 130, "cellstyle": ""}, {"data-SMILES": "CCCC/C=C/C=C/C=O", "data-Molecule-Name": "trans,trans-2,4-Nonadienal", "data-Responsive": 0, "data-img": null, "data-ID": 49779, "mols2grid-id": 131, "data-mols2grid-id-display": 131, "cellstyle": ""}, {"data-SMILES": "CC(=CCC/C(=C/C/C=C(\\C)/C=C)/C)C", "data-Molecule-Name": "farnesene", "data-Responsive": 0, "data-img": null, "data-ID": 9304, "mols2grid-id": 132, "data-mols2grid-id-display": 132, "cellstyle": ""}, {"data-SMILES": "CC1=C(C(=C(C(=C1[N+](=O)[O-])C(C)(C)C)[N+](=O)[O-])C)C(=O)C", "data-Molecule-Name": "musk ketone", "data-Responsive": 0, "data-img": null, "data-ID": 36598, "mols2grid-id": 137, "data-mols2grid-id-display": 137, "cellstyle": ""}, {"data-SMILES": "CCC1C(=C(C(=O)O1)O)C", "data-Molecule-Name": "Abhexone", "data-Responsive": 0, "data-img": null, "data-ID": 45157, "mols2grid-id": 106, "data-mols2grid-id-display": 106, "cellstyle": ""}, {"data-SMILES": "CC(CO)CS", "data-Molecule-Name": "2-methyl-3-sulfanylpropan-1-ol", "data-Responsive": 0, "data-img": null, "data-ID": 10502, "mols2grid-id": 133, "data-mols2grid-id-display": 133, "cellstyle": ""}, {"data-SMILES": "CC1C(=C(C(=O)O1)O)C", "data-Molecule-Name": "Sotolone", "data-Responsive": 0, "data-img": null, "data-ID": 48595, "mols2grid-id": 104, "data-mols2grid-id-display": 104, "cellstyle": ""}, {"data-SMILES": "C1=CC=C(C=C1)CC(=O)[O-]", "data-Molecule-Name": "phenylacetate", "data-Responsive": 0, "data-img": null, "data-ID": 35256, "mols2grid-id": 95, "data-mols2grid-id-display": 95, "cellstyle": ""}, {"data-SMILES": "CCC1C(=O)C(=C(O1)C)O", "data-Molecule-Name": "homofuraneol", "data-Responsive": 0, "data-img": null, "data-ID": 44253, "mols2grid-id": 105, "data-mols2grid-id-display": 105, "cellstyle": ""}, {"data-SMILES": "CC(C)C12CCC(O1)(CC2)C", "data-Molecule-Name": "1,4-cineole", "data-Responsive": 0, "data-img": null, "data-ID": 31102, "mols2grid-id": 96, "data-mols2grid-id-display": 96, "cellstyle": ""}, {"data-SMILES": "CCCC(C)C=O", "data-Molecule-Name": "Methyl-pentanal", "data-Responsive": 0, "data-img": null, "data-ID": 11937, "mols2grid-id": 97, "data-mols2grid-id-display": 97, "cellstyle": ""}, {"data-SMILES": "CCCCCCC(=O)O", "data-Molecule-Name": "Heptanoic acid", "data-Responsive": 0, "data-img": null, "data-ID": 2442, "mols2grid-id": 92, "data-mols2grid-id-display": 92, "cellstyle": ""}, {"data-SMILES": "CCCC(C(=O)O)Br", "data-Molecule-Name": "2-bromovaleric acid", "data-Responsive": 0, "data-img": null, "data-ID": 35261, "mols2grid-id": 99, "data-mols2grid-id-display": 99, "cellstyle": ""}, {"data-SMILES": "CCCCCC=O", "data-Molecule-Name": "hexanal", "data-Responsive": 0, "data-img": null, "data-ID": 1627, "mols2grid-id": 94, "data-mols2grid-id-display": 94, "cellstyle": ""}, {"data-SMILES": "CCCCCCC(C(=O)O)Br", "data-Molecule-Name": "2-bromo-octanoic acid", "data-Responsive": 0, "data-img": null, "data-ID": 12977, "mols2grid-id": 91, "data-mols2grid-id-display": 91, "cellstyle": ""}, {"data-SMILES": "CCCCC(C(=O)O)Br", "data-Molecule-Name": "2-bromo-hexanoic acid", "data-Responsive": 0, "data-img": null, "data-ID": 15803, "mols2grid-id": 93, "data-mols2grid-id-display": 93, "cellstyle": ""}, {"data-SMILES": "CC(=CCC/C(=C/C(OC)OC)/C)C", "data-Molecule-Name": "Citral dimethylacetal", "data-Responsive": 0, "data-img": null, "data-ID": 40769, "mols2grid-id": 101, "data-mols2grid-id-display": 101, "cellstyle": ""}, {"data-SMILES": "C1=CC2=C(C3=C(C=CC=N3)C=C2)N=C1", "data-Molecule-Name": "1,10-phenanthroline", "data-Responsive": 0, "data-img": null, "data-ID": 587, "mols2grid-id": 142, "data-mols2grid-id-display": 142, "cellstyle": ""}, {"data-SMILES": "CC[C@@H](C1=CC=CC=C1)C(=O)O", "data-Molecule-Name": "(S)-2-Phenylbutanoic acid", "data-Responsive": 0, "data-img": null, "data-ID": 3223, "mols2grid-id": 143, "data-mols2grid-id-display": 143, "cellstyle": ""}, {"data-SMILES": "CCC(C(C)CO)S", "data-Molecule-Name": "3-mercapto-2-methylpentan-1-ol", "data-Responsive": 0, "data-img": null, "data-ID": 14362, "mols2grid-id": 103, "data-mols2grid-id-display": 103, "cellstyle": ""}, {"data-SMILES": "CCCCCCC(=O)OCC=C", "data-Molecule-Name": "Allyl heptanoate", "data-Responsive": 1, "data-img": null, "data-ID": 3940, "mols2grid-id": 162, "data-mols2grid-id-display": 162, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CC1=CCC(CC1O)C(=C)C", "data-Molecule-Name": "CARVEOL", "data-Responsive": 1, "data-img": null, "data-ID": 288, "mols2grid-id": 21, "data-mols2grid-id-display": 21, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CCCCCC(=O)CC(=O)C", "data-Molecule-Name": "2,4-Nonanedione", "data-Responsive": 1, "data-img": null, "data-ID": 1875, "mols2grid-id": 315, "data-mols2grid-id-display": 315, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CC(CC1=CC2=C(C=C1)OCO2)C=O", "data-Molecule-Name": "helional", "data-Responsive": 1, "data-img": null, "data-ID": 376, "mols2grid-id": 17, "data-mols2grid-id-display": 17, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CCCCCC(=O)C(C)C(=O)C", "data-Molecule-Name": "3-Methylnonane-2,4-dione", "data-Responsive": 1, "data-img": null, "data-ID": 356, "mols2grid-id": 294, "data-mols2grid-id-display": 294, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CC1=C(C(=C(C(=C1[N+](=O)[O-])C(C)(C)C)[N+](=O)[O-])C)[N+](=O)[O-]", "data-Molecule-Name": "Musk xylol", "data-Responsive": 1, "data-img": null, "data-ID": 37493, "mols2grid-id": 136, "data-mols2grid-id-display": 136, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CC(=O)OCC1=CC=CC=C1", "data-Molecule-Name": "Benzyl acetate", "data-Responsive": 1, "data-img": null, "data-ID": 3653, "mols2grid-id": 165, "data-mols2grid-id-display": 165, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CC(=O)C1=CC2=CC=CC=C2C=C1", "data-Molecule-Name": "methyl beta-naphthyl ketone", "data-Responsive": 1, "data-img": null, "data-ID": 5068, "mols2grid-id": 319, "data-mols2grid-id-display": 319, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CC/C=C\\CCO CCC/C=C/C=O", "data-Molecule-Name": "cis-3-hexenol trans-2-hexenal", "data-Responsive": 1, "data-img": null, "data-ID": 50608, "mols2grid-id": 320, "data-mols2grid-id-display": 320, "cellstyle": "background-color: azure;"}, {"data-SMILES": "C1COC2=CC=CC=C2C1=O", "data-Molecule-Name": "4-Chromanone", "data-Responsive": 1, "data-img": null, "data-ID": 2534, "mols2grid-id": 159, "data-mols2grid-id-display": 159, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CCCCCCCCCCO", "data-Molecule-Name": "1-Decanol", "data-Responsive": 1, "data-img": null, "data-ID": 2606, "mols2grid-id": 149, "data-mols2grid-id-display": 149, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CC(=O)C1=CC2=CC=CC=C2C=C1 CC1=CC[C@H](CC1=O)C(=C)C C/C=C/C1=CC(=C(C=C1)OC)OC CC(=O)OCCC1=CC=CC=C1", "data-Molecule-Name": "MCMP", "data-Responsive": 1, "data-img": null, "data-ID": 51322, "mols2grid-id": 321, "data-mols2grid-id-display": 321, "cellstyle": "background-color: azure;"}, {"data-SMILES": "C/C=C/C1=CC=C(C=C1)OC", "data-Molecule-Name": "p-Anethole", "data-Responsive": 1, "data-img": null, "data-ID": 3773, "mols2grid-id": 299, "data-mols2grid-id-display": 299, "cellstyle": "background-color: azure;"}, {"data-SMILES": "COC1=CC=C(C=C1)CC=C", "data-Molecule-Name": "Estragole", "data-Responsive": 1, "data-img": null, "data-ID": 5316, "mols2grid-id": 300, "data-mols2grid-id-display": 300, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CC1=CC[C@H](CC1O)C(=C)C", "data-Molecule-Name": "(-)-Carveol", "data-Responsive": 1, "data-img": null, "data-ID": 289, "mols2grid-id": 310, "data-mols2grid-id-display": 310, "cellstyle": "background-color: azure;"}, {"data-SMILES": "C[C@H]1CC[C@@H](C(=O)C1)C(C)C", "data-Molecule-Name": "(+)-Menthone", "data-Responsive": 1, "data-img": null, "data-ID": 2714, "mols2grid-id": 309, "data-mols2grid-id-display": 309, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CCCCCC1=CC=CC=N1", "data-Molecule-Name": "2-Pentylpyridine", "data-Responsive": 1, "data-img": null, "data-ID": 1469, "mols2grid-id": 308, "data-mols2grid-id-display": 308, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CC(=CCC/C(=C\\CO)/C)C", "data-Molecule-Name": "nerol", "data-Responsive": 1, "data-img": null, "data-ID": 12936, "mols2grid-id": 5, "data-mols2grid-id-display": 5, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CC1=CCC(CC1)C(=C)C", "data-Molecule-Name": "Dipentene", "data-Responsive": 1, "data-img": null, "data-ID": 4963, "mols2grid-id": 141, "data-mols2grid-id-display": 141, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CC1=CC=CC=C1CC(=O)OC", "data-Molecule-Name": "methyl 2-(2-methylphenyl)acetate", "data-Responsive": 1, "data-img": null, "data-ID": 371, "mols2grid-id": 140, "data-mols2grid-id-display": 140, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CCCCCC(=O)CC", "data-Molecule-Name": "3-Octanone", "data-Responsive": 1, "data-img": null, "data-ID": 3749, "mols2grid-id": 157, "data-mols2grid-id-display": 157, "cellstyle": "background-color: azure;"}, {"data-SMILES": "C[C@@H]1CC[C@H](C(=O)C1)C(C)C", "data-Molecule-Name": "menthone", "data-Responsive": 1, "data-img": null, "data-ID": 2713, "mols2grid-id": 24, "data-mols2grid-id-display": 24, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CCOC(=O)CC1=CC(=CC=C1)Br", "data-Molecule-Name": "ethyl 2-(3-bromophenyl)acetate", "data-Responsive": 1, "data-img": null, "data-ID": 394, "mols2grid-id": 139, "data-mols2grid-id-display": 139, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CC(=CCCC(C)(C=C)O)C", "data-Molecule-Name": "linalool", "data-Responsive": 1, "data-img": null, "data-ID": 502, "mols2grid-id": 4, "data-mols2grid-id-display": 4, "cellstyle": "background-color: azure;"}, {"data-SMILES": "C1=CC=C(C=C1)C(=O)C2=CC=CC=C2", "data-Molecule-Name": "Benzophenone", "data-Responsive": 1, "data-img": null, "data-ID": 3818, "mols2grid-id": 138, "data-mols2grid-id-display": 138, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CC(C)CC(=O)CC(=O)C", "data-Molecule-Name": "6-Methyl-2,4-heptanedione", "data-Responsive": 1, "data-img": null, "data-ID": 1506, "mols2grid-id": 313, "data-mols2grid-id-display": 313, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CCCCC(=O)CC(=O)C", "data-Molecule-Name": "2,4-Octanedione", "data-Responsive": 1, "data-img": null, "data-ID": 1097, "mols2grid-id": 314, "data-mols2grid-id-display": 314, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CCCCC(=O)CC", "data-Molecule-Name": "3-Heptanone", "data-Responsive": 1, "data-img": null, "data-ID": 2758, "mols2grid-id": 156, "data-mols2grid-id-display": 156, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CCCCCCC(=O)C", "data-Molecule-Name": "2-Octanone", "data-Responsive": 1, "data-img": null, "data-ID": 5383, "mols2grid-id": 153, "data-mols2grid-id-display": 153, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CCCCCCCC(=O)C", "data-Molecule-Name": "2-Nonanone", "data-Responsive": 1, "data-img": null, "data-ID": 4430, "mols2grid-id": 152, "data-mols2grid-id-display": 152, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CC(=CCC/C(=C/CCC(C)(C=C)O)/C)C", "data-Molecule-Name": "nerolidol", "data-Responsive": 1, "data-img": null, "data-ID": 11935, "mols2grid-id": 126, "data-mols2grid-id-display": 126, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CCCCCC(=O)C", "data-Molecule-Name": "2-heptanone", "data-Responsive": 1, "data-img": null, "data-ID": 440, "mols2grid-id": 26, "data-mols2grid-id-display": 26, "cellstyle": "background-color: azure;"}, {"data-SMILES": "C[C@H](CCC=C(C)C)CC=O", "data-Molecule-Name": "(R)-(+)-citronellal", "data-Responsive": 1, "data-img": null, "data-ID": 25007, "mols2grid-id": 113, "data-mols2grid-id-display": 113, "cellstyle": "background-color: azure;"}, {"data-SMILES": "C[C@@H](CCC=C(C)C)CC=O", "data-Molecule-Name": "(S)-(-)-citronellal", "data-Responsive": 1, "data-img": null, "data-ID": 2711, "mols2grid-id": 112, "data-mols2grid-id-display": 112, "cellstyle": "background-color: azure;"}, {"data-SMILES": "C[C@@H](CCC=C(C)C)CCO", "data-Molecule-Name": "(S)-(-)-citronellol", "data-Responsive": 1, "data-img": null, "data-ID": 3497, "mols2grid-id": 110, "data-mols2grid-id-display": 110, "cellstyle": "background-color: azure;"}, {"data-SMILES": "COC1=CC=C(C=C1)C=O", "data-Molecule-Name": "para-anisaldehyde", "data-Responsive": 1, "data-img": null, "data-ID": 5416, "mols2grid-id": 244, "data-mols2grid-id-display": 244, "cellstyle": "background-color: azure;"}, {"data-SMILES": "C=CCOC(=O)CC1=CC=CC=C1", "data-Molecule-Name": "Allyl Phenyl acetate", "data-Responsive": 1, "data-img": null, "data-ID": 5280, "mols2grid-id": 108, "data-mols2grid-id-display": 108, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CCCC(CCOC(=O)C)S", "data-Molecule-Name": "3-Mercaptohexyl acetate", "data-Responsive": 1, "data-img": null, "data-ID": 1787, "mols2grid-id": 102, "data-mols2grid-id-display": 102, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CC1CCC(CC1=O)C(=C)C", "data-Molecule-Name": "(+)-Dihydrocarvone", "data-Responsive": 1, "data-img": null, "data-ID": 267, "mols2grid-id": 145, "data-mols2grid-id-display": 145, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CC1=CC[C@H](CC1=O)C(=C)C", "data-Molecule-Name": "(R)-Carvone", "data-Responsive": 1, "data-img": null, "data-ID": 4209, "mols2grid-id": 100, "data-mols2grid-id-display": 100, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CC1=CC[C@@H](CC1=O)C(=C)C", "data-Molecule-Name": "(+)-carvone", "data-Responsive": 1, "data-img": null, "data-ID": 4330, "mols2grid-id": 98, "data-mols2grid-id-display": 98, "cellstyle": "background-color: azure;"}, {"data-SMILES": "C1=CC=C(C=C1)OC2=CC=CC=C2", "data-Molecule-Name": "diphenyl ether", "data-Responsive": 1, "data-img": null, "data-ID": 48653, "mols2grid-id": 80, "data-mols2grid-id-display": 80, "cellstyle": "background-color: azure;"}, {"data-SMILES": "C1=CC=C(C=C1)CCS", "data-Molecule-Name": "2-Phenylethanethiol", "data-Responsive": 1, "data-img": null, "data-ID": 5336, "mols2grid-id": 213, "data-mols2grid-id-display": 213, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CCCCCCCCOC(=O)C", "data-Molecule-Name": "octyl acetate", "data-Responsive": 1, "data-img": null, "data-ID": 49601, "mols2grid-id": 83, "data-mols2grid-id-display": 83, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CC1=CCC(CC1)C(C)(C)OC(=O)C", "data-Molecule-Name": "terpinyl acetate", "data-Responsive": 1, "data-img": null, "data-ID": 45103, "mols2grid-id": 84, "data-mols2grid-id-display": 84, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CC1CCCCCCCCCCCCC(=O)C1", "data-Molecule-Name": "(+/-)-Muscone", "data-Responsive": 1, "data-img": null, "data-ID": 41744, "mols2grid-id": 85, "data-mols2grid-id-display": 85, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CC1=CC[C@H](CC1)C(=C)C", "data-Molecule-Name": "(-)-(S)-Limonene", "data-Responsive": 1, "data-img": null, "data-ID": 4961, "mols2grid-id": 86, "data-mols2grid-id-display": 86, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CCCCCC(=O)OCC", "data-Molecule-Name": "Ethyl hexanoate", "data-Responsive": 1, "data-img": null, "data-ID": 3885, "mols2grid-id": 250, "data-mols2grid-id-display": 250, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CCCCCC1CCC(=O)O1", "data-Molecule-Name": "5-Pentyloxolan-2-one", "data-Responsive": 1, "data-img": null, "data-ID": 3113, "mols2grid-id": 285, "data-mols2grid-id-display": 285, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CC(=CCC/C(=C/C=O)/C)C", "data-Molecule-Name": "citral", "data-Responsive": 1, "data-img": null, "data-ID": 49239, "mols2grid-id": 55, "data-mols2grid-id-display": 55, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CCOC(=O)C1CCCCC1", "data-Molecule-Name": "Ethyl cyclohexanecarboxylate", "data-Responsive": 1, "data-img": null, "data-ID": 1781, "mols2grid-id": 254, "data-mols2grid-id-display": 254, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CCCCCC1=C(CCC1=O)C", "data-Molecule-Name": "Dihydrojasmone", "data-Responsive": 1, "data-img": null, "data-ID": 5184, "mols2grid-id": 170, "data-mols2grid-id-display": 170, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CCCCCC(C=C)O", "data-Molecule-Name": "1-octen-3-ol", "data-Responsive": 1, "data-img": null, "data-ID": 4458, "mols2grid-id": 31, "data-mols2grid-id-display": 31, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CCCCC/C=C/CCC=O", "data-Molecule-Name": "E-4-Decenal", "data-Responsive": 1, "data-img": null, "data-ID": 560, "mols2grid-id": 129, "data-mols2grid-id-display": 129, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CC(CCCC(C)(C)O)CC=O", "data-Molecule-Name": "Hydroxy-citronellal", "data-Responsive": 1, "data-img": null, "data-ID": 4686, "mols2grid-id": 34, "data-mols2grid-id-display": 34, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CC(=CCCC(=CC=O)C)C", "data-Molecule-Name": "3,7-Dimethyl-2,6-octadienal", "data-Responsive": 1, "data-img": null, "data-ID": 4773, "mols2grid-id": 35, "data-mols2grid-id-display": 35, "cellstyle": "background-color: azure;"}, {"data-SMILES": "C[C@H](CCC=C(C)C)CCO", "data-Molecule-Name": "(R)-(+)-citronellol", "data-Responsive": 1, "data-img": null, "data-ID": 3522, "mols2grid-id": 36, "data-mols2grid-id-display": 36, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CCCCCCCCCS", "data-Molecule-Name": "Nonanethiol", "data-Responsive": 1, "data-img": null, "data-ID": 5527, "mols2grid-id": 174, "data-mols2grid-id-display": 174, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CCCCCCCCS", "data-Molecule-Name": "Octanethiol", "data-Responsive": 1, "data-img": null, "data-ID": 2185, "mols2grid-id": 175, "data-mols2grid-id-display": 175, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CCCCCCCO", "data-Molecule-Name": "heptanol", "data-Responsive": 1, "data-img": null, "data-ID": 333, "mols2grid-id": 89, "data-mols2grid-id-display": 89, "cellstyle": "background-color: azure;"}, {"data-SMILES": "C[C@@H]1CC[C@H]([C@@H](C1)O)C(C)C", "data-Molecule-Name": "(-)-menthol", "data-Responsive": 1, "data-img": null, "data-ID": 46399, "mols2grid-id": 42, "data-mols2grid-id-display": 42, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CC(=O)OCCC1=CC=CC=C1", "data-Molecule-Name": "2-Phenylethyl acetate", "data-Responsive": 1, "data-img": null, "data-ID": 2374, "mols2grid-id": 265, "data-mols2grid-id-display": 265, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CCOC(=O)CC1=CC=CC=C1", "data-Molecule-Name": "Ethyl 2-phenylacetate", "data-Responsive": 1, "data-img": null, "data-ID": 751, "mols2grid-id": 264, "data-mols2grid-id-display": 264, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CC/C=C\\CCCCCC=O", "data-Molecule-Name": "Z-7-Decenal", "data-Responsive": 1, "data-img": null, "data-ID": 34750, "mols2grid-id": 122, "data-mols2grid-id-display": 122, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CC1=CC[C@@H](CC1)C(=C)C", "data-Molecule-Name": "(R)-4-Isopropenyl-1-methyl-1-cyclohexene", "data-Responsive": 1, "data-img": null, "data-ID": 4958, "mols2grid-id": 183, "data-mols2grid-id-display": 183, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CC(=CCC/C(=C/CO)/C)C", "data-Molecule-Name": "geraniol", "data-Responsive": 1, "data-img": null, "data-ID": 1147, "mols2grid-id": 119, "data-mols2grid-id-display": 119, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CC/C=C\\CCO", "data-Molecule-Name": "cis-3-hexen-1-ol", "data-Responsive": 1, "data-img": null, "data-ID": 4016, "mols2grid-id": 54, "data-mols2grid-id-display": 54, "cellstyle": "background-color: azure;"}, {"data-SMILES": "CC1=CC[C@H](CC1=O)C(=C)C CC1=CC[C@@H](CC1=O)C(=C)C CC/C=C\\CCO COC1=CC=C(C=C1)C=O CC(=O)C1=CC2=CC=CC=C2C=C1 CC(=CCCC(C)(C=C)O)C", "data-Molecule-Name": "L-Carvone d-Carvone cis-3-hexenol anis aldehyde methyl-beta-naphthyl ketone linalool", "data-Responsive": 1, "data-img": null, "data-ID": 50231, "mols2grid-id": 322, "data-mols2grid-id-display": 322, "cellstyle": "background-color: azure;"}]);
+
+
+// filter
+if (window.parent.mols2grid_lists === undefined) {
+    window.parent.mols2grid_lists = {};
+}
+window.parent.mols2grid_lists["default"] = listObj;
+
+
+// selection
+class MolStorage extends Map {
+    multi_set(_id, _smiles) {
+        for (let i = 0; i < _id.length; i++) {
+            this.set(_id[i], _smiles[i])
+        }
+    }
+    multi_del(_id) {
+        for (let i = 0; i < _id.length; i++) {
+            this.delete(_id[i])
+        }
+    }
+    to_dict() {
+        var content = '{'
+        for (let [key, value] of this) {
+            content += key + ':' + JSON.stringify(value) + ','
+        }
+        content = content.length > 1 ? content.slice(0, -1) : content
+        content += '}'
+        return content
+    }
+    to_keys() {
+        var content = []
+        for (let [key] of this) {
+            content.push(key)
+        }
+        return content
+    }
+    download_smi(fileName, allItems) {
+        var content = ''
+
+        if (allItems) {
+            // Gather all smiles
+            for (var item of allItems) {
+                var smiles = item.values()['data-SMILES']
+                var id = item.values()['mols2grid-id']
+                content += smiles + ' ' + id + '\n'
+            }
+        } else {
+            // Gather selected smiles
+            for (let [key, value] of this) {
+                content += value + ' ' + key + '\n'
+            }
+        }
+
+        var a = document.createElement('a')
+        var file = new Blob([content], { type: 'text/plain' })
+        a.href = URL.createObjectURL(file)
+        a.download = fileName
+        a.click()
+        a.remove()
+    }
+}
+var SELECTION = new MolStorage();
+
+
+
+// kernel
+function add_selection(grid_id, _id, smiles) {
+    SELECTION.multi_set(_id, smiles);
+    let model = window.parent["_MOLS2GRID_" + grid_id];
+    if (model) {
+        model.set("selection", SELECTION.to_dict());
+        model.save_changes();
+    }
+}
+function del_selection(grid_id, _id) {
+    SELECTION.multi_del(_id);
+    let model = window.parent["_MOLS2GRID_" + grid_id];
+    if (model) {
+        model.set("selection", SELECTION.to_dict());
+        model.save_changes();
+    }
+}
+if (window.parent.IPython !== undefined) {
+    // Jupyter notebook
+    var kernel_env = "jupyter";
+} else if (window.parent.google !== undefined) {
+    // Google colab
+    var kernel_env = "colab";
+} else {
+    var kernel_env = null;
+}
+
+
+
+
+// sort
+var sortField = 'data-Responsive'
+var sortOrder = 'asc'
+
+// Sort dropdown
+$('#mols2grid .m2g-sort select').change(sort)
+
+// Sort order
+$('#mols2grid .m2g-order').click(flipSort)
+
+function sort(e) {
+    if (e) {
+        sortField = e.target.value
+        var selectedOption = e.target.options[e.target.selectedIndex]
+        var sortFieldDisplay = selectedOption.text
+    }
+
+    // Sort
+    if (sortField == 'checkbox') {
+        listObj.sort('mols2grid-id', {order: sortOrder, sortFunction: checkboxSort})
+    } else {
+        listObj.sort(sortField, {order: sortOrder, sortFunction: mols2gridSortFunction})
+    }
+
+    // Update UI.
+    $(this).parent().find('.m2g-display').text(sortFieldDisplay)
+}
+
+// prettier-ignore
+function flipSort() {
+    $(this).parent().removeClass('m2d-arrow-' + sortOrder)
+    sortOrder = sortOrder === 'desc' ? 'asc' : 'desc'
+    $(this).parent().addClass('m2d-arrow-' + sortOrder)
+    sort()
+}
+
+function mols2gridSortFunction(itemA, itemB, options) {
+    var x = itemA.values()[options.valueName]
+    var y = itemB.values()[options.valueName]
+    if (typeof x === 'number') {
+        if (isFinite(x - y)) {
+            return x - y
+        } else {
+            return isFinite(x) ? -1 : 1
+        }
+    } else {
+        x = x ? x.toLowerCase() : x
+        y = y ? y.toLowerCase() : y
+        return x < y ? -1 : x > y ? 1 : 0
+    }
+}
+function checkboxSort(itemA, itemB, options) {
+    if (itemA.elm !== undefined) {
+        var checkedA = itemA.elm.querySelector('input[type=checkbox]').checked
+        if (itemB.elm !== undefined) {
+            var checkedB = itemB.elm.querySelector('input[type=checkbox]').checked
+            if (checkedA && !checkedB) {
+                return -1
+            } else if (!checkedA && checkedB) {
+                return 1
+            } else {
+                return 0
+            }
+        } else {
+            return -1
+        }
+    } else if (itemB.elm !== undefined) {
+        return 1
+    } else {
+        return 0
+    }
+}
+
+
+// add style for whole cell
+listObj.on("updated", function (list) {
+    $('#mols2grid div.m2g-cell').each(function() {
+        var $t = $(this);
+        $t.attr({style: $t.attr('data-cellstyle')})
+          .removeAttr('data-cellstyle');
+    });
+});
+
+
+
+
+// grid interactions (select, click, tooltip, key events)
+// Check if selection UI is supported.
+var supportSelection = eval('True'.toLowerCase());
+
+listObj.on("updated", initInteraction);
+
+// (Re)initialiuze all grid interaction every time the grid changes.
+function initInteraction(list) {
+    initCellClick()
+    initToolTip()
+    initKeyboard()
+    if (supportSelection) initCheckbox()
+
+
+    // Hide pagination if there is only one page.
+    if (listObj.matchingItems.length <= listObj.page) {
+        $('#mols2grid .m2g-pagination').hide()
+    } else {
+        $('#mols2grid .m2g-pagination').show()
+    }
+
+    // Add a bunch of phantom cells.
+    // These are used as filler to make sure that
+    // no grid cells need to be resized when there's
+    // not enough results to fill the row.
+    $('#mols2grid .m2g-list').append('<div class="m2g-cell m2g-phantom"></div>'.repeat(11));
+}
+
+// Cell click handler.
+function initCellClick() {
+    $('#mols2grid .m2g-cell').off('click').click(function(e) {
+        if ($(e.target).hasClass('m2g-info') || $(e.target).is(':checkbox')) {
+            // Info button / Checkbox --> do nothing.
+        } else if ($(e.target).is('div') && $(e.target).hasClass('data')) {
+            // Data string --> copy text.
+            copyOnClick(e.target)
+        } else if ($(e.target).hasClass('m2g-callback')) {
+            // Callback button.
+            onCallbackButtonClick(e.target)
+        } else {
+            // Outside checkbox --> toggle the checkbox.
+            if (supportSelection) {
+                var chkbox = $(this).find('input:checkbox')[0]
+                chkbox.checked = !chkbox.checked
+                $(chkbox).trigger('change')
+            }
+        }
+    })
+}
+
+// Store an element's text content in the clipboard.
+function copyOnClick(target) {
+    var text = $(target).text()
+    navigator.clipboard.writeText(text)
+
+    // Blink the cell to indicate that the text was copied.
+    $(target).addClass('m2g-copy-blink')
+    setTimeout(function() {
+        $(target).removeClass('m2g-copy-blink')
+    }, 450)
+}
+
+// Keyboard actions.
+function initKeyboard() {
+    // Disable scroll when pressing UP/DOWN arrows
+    $('#mols2grid .m2g-cell').off('keydown').keydown(function(e) {
+        if (e.which == 38 || e.which == 40) {
+            e.preventDefault()
+        }
+    })
+
+    $('#mols2grid .m2g-cell').off('keyup').keyup(function(e) {
+        var chkbox = $(this).find('input:checkbox')[0]
+        if (e.which == 13) {
+            // ENTER: toggle
+            chkbox.checked = !chkbox.checked
+            $(chkbox).trigger('change')
+        } else if (e.which == 27 || e.which == 8) {
+            // ESC/BACKSPACE: unselect
+            chkbox.checked = false
+            $(chkbox).trigger('change')
+        } else if (e.which == 37) {
+            // LEFT
+            $(this).prev().focus()
+        } else if (e.which == 39) {
+            // RIGHT
+            $(this).next().focus()
+        } else if (e.which == 38 || e.which == 40) {
+            var containerWidth = $(this).parent().outerWidth()
+            var cellWidth = $(this).outerWidth() + parseInt($(this).css('marginLeft')) * 2
+            var columns = Math.round(containerWidth / cellWidth)
+            var index = $(this).index()
+            if (e.which == 38) {
+                // UP
+                var indexAbove = Math.max(index - columns, 0)
+                $(this).parent().children().eq(indexAbove).focus()
+            } else if (e.which == 40) {
+                // DOWN    
+                var total = $(this).parent().children().length
+                var indexBelow = Math.min(index + columns, total)
+                $(this).parent().children().eq(indexBelow).focus()
+            }
+        }
+    })
+}
+
+// Show tooltip when hovering the info icon.
+function initToolTip() {
+    $('#mols2grid .m2g-info').off('mouseenter').off('mouseleave').off('click').mouseenter(function() {
+        // Show on enter
+        $(this).closest('.m2g-cell').find('.m2g-tooltip[data-toggle="popover"]').popover('show')
+        $('body > .popover').click(function(e) {
+            if ($(e.target).hasClass('copy-me')) {
+                copyOnClick(e.target)
+            } else if ($(e.target).is('button')) {
+                
+            }
+        })
+    }).mouseleave(function() {
+        // Hide on leave, unless sticky.
+        if (!$(this).closest('.m2g-cell').hasClass('m2g-keep-tooltip')) {
+            $(this).closest('.m2g-cell').find('.m2g-tooltip[data-toggle="popover"]').popover('hide')
+        }
+    }).click(function() {
+        // Toggle sticky on click.
+        $(this).closest('.m2g-cell').toggleClass('m2g-keep-tooltip')
+
+        // Hide tooltip when sticky was turned off.
+        if ($(this).closest('.m2g-cell').hasClass('m2g-keep-tooltip')) {
+            $(this).closest('.m2g-cell').find('.m2g-tooltip[data-toggle="popover"]').popover('show')
+        } else if (!$(this).closest('.m2g-cell').hasClass('m2g-keep-tooltip')) {
+            $(this).closest('.m2g-cell').find('.m2g-tooltip[data-toggle="popover"]').popover('hide')
+        }
+    })
+}
+
+// Update selection on checkbox click.
+function initCheckbox() {
+    $("input:checkbox").off('change').change(function() {
+        var _id = parseInt($(this).closest(".m2g-cell").attr("data-mols2grid-id"));
+        if (this.checked) {
+            var _smiles = $($(this).closest(".m2g-cell").children(".data-SMILES")[0]).text();
+            add_selection("default", [_id], [_smiles]);
+        } else {
+            del_selection("default", [_id]);
+        }
+    });
+}
+
+// Callback button
+function onCallbackButtonClick(target) {
+    var data = {}
+    data["mols2grid-id"] = parseInt($(target).closest(".m2g-cell")
+                                            .attr("data-mols2grid-id"));
+    data["img"] = $(target).parent().siblings(".data-img").eq(0).get(0).innerHTML;
+    $(target).parent().siblings(".data").not(".data-img").each(function() {
+        let name = this.className.split(" ")
+            .filter(cls => cls.startsWith("data-"))[0]
+            .substring(5);
+        data[name] = this.innerHTML;
+    });
+
+    
+    // Call custom js callback.
+    None
+    
+}
+
+
+
+/**
+ * Actions
+ */
+
+// Listen to action dropdown.
+$('#mols2grid .m2g-actions select').change(function(e) {
+    var val = e.target.value
+    switch(val) {
+        case 'select-all':
+            selectAll()
+            break
+        case 'select-matching':
+            selectMatching()
+            break
+        case 'unselect-all':
+            unselectAll()
+            break
+        case 'invert':
+            invertSelection()
+            break
+        case 'copy':
+            copy()
+            break
+        case 'save-smiles':
+            saveSmiles()
+            break
+        case 'save-csv':
+            saveCSV()
+            break
+    }
+    $(this).val('') // Reset dropdown
+})
+
+// Check all.
+function selectAll(e) {
+    var _id = [];
+    var _smiles = [];
+    listObj.items.forEach(function (item) {
+        if (item.elm) {
+            item.elm.getElementsByTagName("input")[0].checked = true;
+        } else {
+            item.show()
+            item.elm.getElementsByTagName("input")[0].checked = true;
+            item.hide()
+        }
+        _id.push(item.values()["mols2grid-id"]);
+        _smiles.push(item.values()["data-SMILES"]);
+    });
+    add_selection("default", _id, _smiles);
+};
+
+
+// Check matching.
+function selectMatching(e) {
+    var _id = [];
+    var _smiles = [];
+    listObj.matchingItems.forEach(function (item) {
+        if (item.elm) {
+            item.elm.getElementsByTagName("input")[0].checked = true;
+        } else {
+            item.show()
+            item.elm.getElementsByTagName("input")[0].checked = true;
+            item.hide()
+        }
+        _id.push(item.values()["mols2grid-id"]);
+        _smiles.push(item.values()["data-SMILES"]);
+    });
+    add_selection("default", _id, _smiles);
+};
+
+// Uncheck all.
+function unselectAll(e) {
+    var _id = [];
+    listObj.items.forEach(function (item) {
+        if (item.elm) {
+            item.elm.getElementsByTagName("input")[0].checked = false;
+        } else {
+            item.show()
+            item.elm.getElementsByTagName("input")[0].checked = false;
+            item.hide()
+        }
+        _id.push(item.values()["mols2grid-id"]);
+    });
+    del_selection("default", _id);
+};
+
+// Invert selection.
+function invertSelection(e) {
+    var _id_add = [];
+    var _id_del = [];
+    var _smiles = [];
+    listObj.items.forEach(function (item) {
+        if (item.elm) {
+            var chkbox = item.elm.getElementsByTagName("input")[0]
+            chkbox.checked = !chkbox.checked;
+        } else {
+            item.show()
+            var chkbox = item.elm.getElementsByTagName("input")[0]
+            chkbox.checked = !chkbox.checked;
+            item.hide()
+        }
+        if (chkbox.checked) {
+            _id_add.push(item.values()["mols2grid-id"]);
+            _smiles.push(item.values()["data-SMILES"]);
+        } else {
+            _id_del.push(item.values()["mols2grid-id"]);
+        }
+    });
+    del_selection("default", _id_del);
+    add_selection("default", _id_add, _smiles);
+};
+
+// Copy to clipboard.
+function copy(e) {
+    // navigator.clipboard.writeText(SELECTION.to_dict());
+    content = _renderCSV('\t')
+    navigator.clipboard.writeText(content)
+};
+
+// Export smiles.
+function saveSmiles(e) {
+    var fileName = "selection.smi"
+    if (SELECTION.size) {
+        // Download selected smiles
+        SELECTION.download_smi(fileName);
+    } else {
+        // Download all smiles
+        SELECTION.download_smi(fileName, listObj.items);
+    }
+};
+
+// Export CSV.
+function saveCSV(e) {
+    content = _renderCSV(';')
+    var a = document.createElement("a");
+    var file = new Blob([content], {type: "text/csv"});
+    a.href = URL.createObjectURL(file);
+    a.download = "selection.csv";
+    a.click();
+    a.remove();
+};
+
+// Render CSV for export of clipboard.
+function _renderCSV(sep) {
+    // Same order as subset + tooltip
+    var columns = Array.from(listObj.items[0].elm.querySelectorAll("div.data"))
+        .map(elm => elm.classList[1])
+        .filter(name => name !== "data-img");
+    // Remove 'data-' and img
+    var header = columns.map(name => name.slice(5));
+    // CSV content
+    header = ["index"].concat(header).join(sep);
+    var content = header + "\n";
+    listObj.items.forEach(function (item) {
+        let data = item.values();
+        let index = data["mols2grid-id"];
+        if (SELECTION.has(index) || SELECTION.size === 0) {
+            content += index;
+            columns.forEach((key) => {
+                content += sep + data[key];
+            })
+            content += "\n";
+        }
+    });
+    return content
+}
+
+
+// generate images for the currently displayed molecules
+var draw_opts = {"width": 130, "height": 90};
+var json_draw_opts = JSON.stringify(draw_opts);
+
+var smarts_matches = {};
+
+// Load RDKit
+window
+.initRDKitModule()
+.then(function(RDKit) {
+    console.log('RDKit version: ', RDKit.version());
+    window.RDKit = RDKit;
+    window.RDKitModule = RDKit;
+
+    // Searchbar
+    function SmartsSearch(query, columns) {
+    var smiles_col = columns[0];
+    smarts_matches = {};
+    var query = $('#mols2grid .m2g-searchbar').val();
+    var qmol = RDKit.get_qmol(query);
+    if (qmol.is_valid()) {
+        listObj.items.forEach(function (item) {
+            var smiles = item.values()[smiles_col]
+            var mol = RDKit.get_mol(smiles, '{"removeHs": false }');
+            if (mol.is_valid()) {
+                var results = mol.get_substruct_matches(qmol);
+                if (results === "\{\}") {
+                    item.found = false;
+                } else {
+                    item.found = true;
+                    
+                    results = JSON.parse(results);
+                    
+                    var highlights = {"atoms": [], "bonds": []};
+                    results.forEach(function (match) {
+                        highlights["atoms"].push(...match.atoms)
+                        highlights["bonds"].push(...match.bonds)
+                    });
+                    
+                    var index = item.values()["mols2grid-id"];
+                    smarts_matches[index] = highlights;
+                    
+                }
+            } else {
+                item.found = false;
+            }
+            mol.delete();
+        });
+    }
+    qmol.delete();
+}
+var search_type = "Text";
+// Temporary fix for regex characters being escaped by list.js
+// This extends String.replace to ignore the regex pattern used by list.js and returns
+// the string unmodified. Other calls should not be affected, unless they use the exact
+// same pattern and replacement value.
+// TODO: remove once the issue is fixed in list.js and released
+String.prototype.replace = (function(_super) {
+    return function() {
+        if (
+            (arguments[0].toString() === '/[-[\\]{}()*+?.,\\\\^$|#]/g')
+            && (arguments[1] === '\\$&')
+        ) {
+            if (this.length === 0) {
+                return ''
+            }
+            return this
+        }
+        return _super.apply(this, arguments);
+    };         
+})(String.prototype.replace);
+
+// Switch search type (Text or SMARTS)
+$('#mols2grid .m2g-search-options .m2g-option').click(function() {
+    search_type = $(this).text();
+    $('#mols2grid .m2g-search-options .m2g-option.sel').removeClass("sel");
+    $(this).addClass("sel");
+});
+
+// Searchbar update event handler
+$('#mols2grid .m2g-searchbar').on("keyup", function(e) {
+    var query = e.target.value;
+    if (search_type === "Text") {
+        smarts_matches = {};
+        listObj.search(query, ['data-mols2grid-id', 'data-ID', 'data-Molecule-Name', 'data-Responsive']);
+    } else {
+        listObj.search(query, ["data-SMILES"], SmartsSearch);
+    }
+});
+
+    
+    // Generate images for the currently displayed molecules.
+RDKit.prefer_coordgen(true);
+function draw_mol(smiles, index, template_mol) {
+    var mol = RDKit.get_mol(smiles, '{"removeHs": false }');
+    var svg = "";
+    if (mol.is_valid()) {
+        var highlights = smarts_matches[index];
+        if (highlights) {
+            var details = Object.assign({}, draw_opts, highlights);
+            details = JSON.stringify(details);
+            mol.generate_aligned_coords(template_mol, true);
+        } else {
+            var details = json_draw_opts;
+        }
+        svg = mol.get_svg_with_highlights(details);
+    }
+    mol.delete();
+    if (svg == "") {
+        return '<svg width="130" height="90" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 130 90"></svg>';
+    }
+    return svg;
+}
+
+// Update images when the list is updated.
+listObj.on("updated", function (list) {
+    var query = $('#mols2grid .m2g-searchbar').val();
+    var template_mol;
+    if (query === "") {
+        smarts_matches = {};
+        template_mol = null;
+    } else {
+        template_mol = RDKit.get_qmol(query);
+        template_mol.set_new_coords(true);
+    }
+    $('#mols2grid .m2g-cell').each(function() {
+        var $t = $(this);
+        var smiles = $t.children(".data-SMILES").first().text();
+        var index = parseInt(this.getAttribute("data-mols2grid-id"));
+        var svg = draw_mol(smiles, index, template_mol);
+        $t.children(".data-img").html(svg);
+    });
+    if (template_mol) {
+        template_mol.delete();
+    }
+});
+    
+
+    // Trigger update to activate tooltips, draw images, setup callbacks...
+    listObj.update();
+    
+    // Set iframe height to fit content.
+    fitIframe(window.frameElement);
+});
+        </script>
+
+
+

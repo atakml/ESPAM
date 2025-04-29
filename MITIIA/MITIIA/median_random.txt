@@ -1,0 +1,713 @@
+chembl_structure_pipeline is not installed. Can not use following functions:
+standardizer
+Table loaded...
+----------------------------------------------------------------------------------------------------
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+0.4238383173942566& 0.4465845227241516& 0.41006168723106384 &0.4328468143939972
+\\\hline
+0.16715103387832642& 0.1770450472831726& 0.13232332468032837 &0.14326037466526031
+\\\hline
+0.14029240608215332& 0.15049080550670624& 0.18284913897514343 &0.18554948270320892
+\\\hline
+0.0455862358212471& 0.08196358382701874& 0.055321548134088516 &0.07711981236934662
+\\\hline
+0.062104448676109314& 0.0621919259428978& 0.07241369038820267 &0.0973021611571312
+\\\hline
+0.23310314118862152& 0.23346646130084991& 0.23310314118862152 &0.23346646130084991
+\\\hline
+0.05535651370882988& 0.08554456382989883& 0.07556945085525513 &0.10930776596069336
+\\\hline
+0.015626581385731697& 0.01947459578514099& 0.01785406284034252 &0.019071385264396667
+\\\hline
+0.03153897449374199& 0.10483825206756592& 0.03153897449374199 &0.10483825206756592
+\\\hline
+0.07789981365203857& 0.07937560975551605& 0.07789981365203857 &0.07937560975551605
+\\\hline
+
+----------------------------------------------------------------------------------------------------
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+0.17461170256137848& 0.17461170256137848& 0.19331935048103333 &0.19331935048103333
+\\\hline
+0.0& 0.0& 0.0 &0.0
+\\\hline
+0.013132442720234394& 0.055473003536462784& 0.0 &0.0
+\\\hline
+0.09027574956417084& 0.09179966896772385& 0.0859842300415039 &0.13669387996196747
+\\\hline
+0.10916303098201752& 0.17414197325706482& 0.04757681488990784 &0.06836814433336258
+\\\hline
+0.2308005690574646& 0.23160170018672943& 0.14935411512851715 &0.22464574873447418
+\\\hline
+0.0& 0.0& 0.0 &0.0
+\\\hline
+0.07846969366073608& 0.07846969366073608& 0.022751571610569954 &0.1675630807876587
+\\\hline
+0.20675824582576752& 0.2073427140712738& 0.2101411670446396 &0.2101411670446396
+\\\hline
+0.10200254619121552& 0.21195240318775177& 0.09728871285915375 &0.11565367877483368
+\\\hline
+
+----------------------------------------------------------------------------------------------------
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+0.13435767590999603& 0.17834874987602234& 0.1398712694644928 &0.17834874987602234
+\\\hline
+0.18737788498401642& 0.23022088408470154& 0.18737788498401642 &0.23022088408470154
+\\\hline
+0.0& 0.13830938935279846& 0.0 &0.08907358348369598
+\\\hline
+0.05503951758146286& 0.15162727236747742& 0.001074829138815403 &0.07077473402023315
+\\\hline
+0.0& 0.0828426405787468& 0.0 &0.08664055913686752
+\\\hline
+0.03281242400407791& 0.09016045182943344& 0.07990796118974686 &0.11089612543582916
+\\\hline
+0.0687030628323555& 0.17152798175811768& 0.0687030628323555 &0.17152798175811768
+\\\hline
+0.16531658172607422& 0.16600048542022705& 0.16679899394512177 &0.16679899394512177
+\\\hline
+0.11998183280229568& 0.12021613121032715& 0.1353406459093094 &0.13826318085193634
+\\\hline
+0.15982604026794434& 0.18774831295013428& 0.1941094994544983 &0.19483467936515808
+\\\hline
+
+----------------------------------------------------------------------------------------------------
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+0.19170871376991272& 0.2012413591146469& 0.19269923865795135 &0.20118020474910736
+\\\hline
+0.0305769182741642& 0.0708913579583168& 0.0305769182741642 &0.0708913579583168
+\\\hline
+0.0& 0.0& 0.1189967468380928 &0.13013917207717896
+\\\hline
+0.02707531675696373& 0.14620301127433777& 0.18248453736305237 &0.1913454532623291
+\\\hline
+0.11440017074346542& 0.17135903239250183& 0.1199592873454094 &0.18652798235416412
+\\\hline
+0.14799430966377258& 0.18922072649002075& 0.14926987886428833 &0.1665196269750595
+\\\hline
+0.1104123443365097& 0.11120113730430603& 0.09920349717140198 &0.10313853621482849
+\\\hline
+0.09777490794658661& 0.100686214864254& 0.08791329711675644 &0.10598696768283844
+\\\hline
+0.028688907623291016& 0.028688907623291016& 0.006063544191420078 &0.011539332568645477
+\\\hline
+0.17952635884284973& 0.2029203474521637& 0.17848952114582062 &0.20203064382076263
+\\\hline
+
+----------------------------------------------------------------------------------------------------
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+
+Remake with atom/edge features as dict so that we can easily decide what to embed. ...REVIEW MODEL ! ! !
+
+0.11136188358068466& 0.14682608842849731& 0.10720619559288025 &0.12214802950620651
+\\\hline
+0.11153791844844818& 0.1659587174654007& 0.07116900384426117 &0.12305641174316406
+\\\hline
+0.06009303033351898& 0.06405312567949295& 0.0 &0.0
+\\\hline
+0.08735410869121552& 0.11326229572296143& 0.0 &0.012877533212304115
+\\\hline
+0.06826594471931458& 0.08730597048997879& 0.17788590490818024 &0.19948142766952515
+\\\hline
+0.14404751360416412& 0.1829885095357895& 0.15181604027748108 &0.15888279676437378
+\\\hline
+0.1911526769399643& 0.21398593485355377& 0.19367864727973938 &0.21932601928710938
+\\\hline
+0.07217385619878769& 0.08328484743833542& 0.059609223157167435 &0.0934503823518753
+\\\hline
+0.14658579230308533& 0.2029333859682083& 0.14652246236801147 &0.19401587545871735
+\\\hline
+0.10754290223121643& 0.10754290223121643& 0.11980322748422623 &0.12358742952346802
+\\\hline
+
