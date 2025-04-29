@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="LTS:jar">
+    <output-path>$PROJECT_DIR$</output-path>
+    <root id="archive" name="LTS.jar">
+      <element id="module-output" name="LTS" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/commons-cli-1.2.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

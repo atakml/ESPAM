@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Main-Class: lts.main.LTS
+Class-Path: commons-cli-1.2.jar
+
